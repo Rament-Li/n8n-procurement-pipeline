@@ -1,0 +1,998 @@
+{
+  "name": "Procurement Email Processing - Template",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nconst store = $getWorkflowStaticData('global');\nstore.knownKeys = store.knownKeys || {};\nstore.knownProducts = store.knownProducts || {};\nconst today = new Date().toISOString().slice(0,10);\nconst toSerial = (s) => { if(!s) return ''; const m=String(s).match(/(\\d+)\\/(\\d+)\\/(\\d+)/); if(!m) return s; const d=Date.UTC(+m[3],+m[1]-1,+m[2]); return Math.floor((d-Date.UTC(1899,11,30))/86400000); };\nconst short = (p) => { if(!p) return p; let s = p.split(',')[0].trim(); return s.length>50 ? s.slice(0,50).trim()+'…' : s; };\nconst mkLink = (u) => { if(!u) return ''; let s = String(u).replace(/\"/g,''); if (s.length > 250) s = s.slice(0,250); return '=HYPERLINK(\"' + s + '\",\"Link\")'; };\nconst extractSpec = (name) => { if(!name) return {v:'',s:''}; const re=/(\\d+(?:\\.\\d+)?)\\s*(kg|mg|µg|g|ml|µl|ul|l|mm|cm|m|oz|inch|in)\\b/gi; const ms=[...String(name).matchAll(re)]; return ms.length===1 ? {v:ms[0][1], s:ms[0][2]} : {v:'',s:''}; };\nconst kw = (p) => encodeURIComponent(String(p||'').split(/\\s+/).slice(0,8).join(' ').slice(0,80));\nfunction orderBlocks(t){ const re=/Order #\\s*\\n\\s*(\\d{3}-\\d{7}-\\d{7})/g; const marks=[]; let m; while((m=re.exec(t))!==null) marks.push({ord:m[1], idx:m.index}); if(!marks.length) return null; const blocks=[]; for(let i=0;i<marks.length;i++){ const seg=t.slice(marks[i].idx, i+1<marks.length?marks[i+1].idx:t.length); blocks.push({ord:marks[i].ord, seg}); } return blocks; }\nfor (const item of $input.all()) {\n  const m = item.json;\n  const text = m.text || m.textPlain || m.snippet || '';\n  const html = m.html || '';\n  const full = text + '\\n' + html;\n  const subject = m.subject || (m.headers && m.headers.subject) || '';\n  const subjClean = subject.replace(/^fwd:\\s*/i,'');\n  const fromRaw = (m.from && (m.from.text || (m.from.value && m.from.value[0] && m.from.value[0].address))) || '';\n  const dateRaw = m.date || m.internalDate || null;\n  let dateStr = '';\n  if (dateRaw) { const d=new Date(isNaN(dateRaw)?dateRaw:Number(dateRaw)); if(!isNaN(d)) dateStr=(d.getUTCMonth()+1)+'/'+d.getUTCDate()+'/'+d.getUTCFullYear(); }\n  const subjLc = subject.toLowerCase();\n  const isConf = /auto-confirm@amazon/i.test(fromRaw) || /^ordered:/i.test(subjClean);\n  let status='', emailType='update';\n  if (isConf) { status='Ordered'; emailType='confirmation'; }\n  else if (/^dispatched/i.test(subjClean)) status='Dispatched';\n  else if (/out for delivery/i.test(subjLc)) status='Out for delivery';\n  else if (/^delivered/i.test(subjClean)) status='Delivered';\n  else if (/cancel/i.test(subjLc)) status='Cancelled';\n  else if (/your return of/i.test(subjLc)) status='Returned';\n  else if (/your refund for/i.test(subjLc)) status='Refunded';\n  else continue;\n  const who = ''; // Add a generic buyer parser if this field is needed.\n  if (emailType === 'confirmation') {\n    let blocks = orderBlocks(text);\n    if (!blocks) { const one = ((text.match(/Order #\\s*\\n?\\s*(\\d{3}-\\d{7}-\\d{7})/)||[])[1]) || ((full.match(/\\d{3}-\\d{7}-\\d{7}/)||[])[0]) || ''; blocks=[{ord:one, seg:text}]; }\n    for (const blk of blocks) {\n      const orderNo = blk.ord, seg = blk.seg;\n      const grab = (re) => { const x = seg.match(re); return x ? x[1].trim() : ''; };\n      const total = grab(/Total\\s*\\n\\s*([\\d.,]+)\\s*GBP/);\n      const arriving = grab(/(Arriving[^\\n]+|Now expected[^\\n]+)/);\n      const veo = grab(/(https:\\/\\/www\\.amazon\\.co\\.uk\\/your-orders\\/order-details[^\\s]+)/);\n      const trk = grab(/(https:\\/\\/www\\.amazon\\.co\\.uk\\/progress-tracker[^\\s]+)/);\n      const orderLink = veo || trk || '';\n      const amzItem = (p) => p ? ('https://www.amazon.co.uk/s?k=' + kw(p)) : orderLink;\n      const liRe = /\\*\\s*(.+?)\\n\\s*Quantity:\\s*(\\d+)(?:\\s*\\n\\s*([\\d.,]+)\\s*GBP)?/g;\n      let li, found=false;\n      while ((li = liRe.exec(seg)) !== null) { found=true;\n        const name = li[1].trim(); const sp = short(name); const u = amzItem(name);\n        if (orderNo) { store.knownKeys[orderNo]=true; store.knownKeys[orderNo+'|'+sp]=true; }\n        store.knownProducts[sp]=true;\n        out.push({ json: { emailType, Date: toSerial(dateStr), Who: who, product: sp, volume: extractSpec(name).v, State: extractSpec(name).s, Items: Number(li[2]), 'Price (Inclu. VAT)': (li[3]||total)? Number(String(li[3]||total).replace(/,/g,'')):'', Supplier:'Amazon', URL: u, Status: status, 'Estimated delivery date': arriving||'', OrderNo: orderNo, LineKey: orderNo+'|'+sp } });\n      }\n      if (!found && orderNo) { store.knownKeys[orderNo]=true; out.push({ json: { emailType, Date: toSerial(dateStr), Who: who, product:'', Supplier:'Amazon', URL: orderLink, Status: status, 'Estimated delivery date': arriving||'', OrderNo: orderNo, LineKey:'' } }); }\n    }\n  } else {\n    const items = [...text.matchAll(/\\*\\s*(.+?)\\n\\s*Quantity:\\s*(\\d+)/g)];\n    const allOrders = [...new Set(text.match(/\\d{3}-\\d{7}-\\d{7}/g) || [])];\n    if (items.length) {\n      for (const it of items) {\n        const sp = short(it[1].trim());\n        out.push({ json: { emailType:'update', matchBy:'line', Status: status, product: sp, orderNos: allOrders, Supplier:'Amazon' } });\n      }\n    } else {\n      let any=false;\n      for (const ord of allOrders) { if (store.knownKeys[ord]) { any=true; out.push({ json: { emailType:'update', matchBy:'order', Status: status, OrderNo: ord } }); } }\n      if (!any) out.push({ json: { emailType:'needsReview', When: today, Reason:'Amazon status update (no items listed) for an unknown order', Supplier:'Amazon', Product:'', OrderNo: allOrders.join(', '), Status: status, Subject: subject } });\n    }\n  }\n}\nreturn out;"
+      },
+      "id": "d77661a9-143c-4d85-b574-e3743b44bf0f",
+      "name": "Parse Amazon email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -784,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "workbook": {
+          "__rl": true,
+          "value": "YOUR_WORKBOOK_ID",
+          "mode": "id",
+          "cachedResultName": "Example Procurement Workbook"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "YOUR_WORKSHEET_ID",
+          "mode": "id",
+          "cachedResultName": "Example Orders"
+        },
+        "table": {
+          "__rl": true,
+          "value": "YOUR_TABLE_ID",
+          "mode": "id",
+          "cachedResultName": "Orders"
+        },
+        "dataMode": "autoMap",
+        "options": {}
+      },
+      "id": "a28d54c1-64f0-44f1-8933-963ecf4671dc",
+      "name": "Excel: add new order row",
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2,
+      "position": [
+        480,
+        -64
+      ],
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Microsoft Excel account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "worksheet",
+        "operation": "update",
+        "workbook": {
+          "__rl": true,
+          "value": "YOUR_WORKBOOK_ID",
+          "mode": "id",
+          "cachedResultName": "Example Procurement Workbook"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "YOUR_WORKSHEET_ID",
+          "mode": "id",
+          "cachedResultName": "Example Orders"
+        },
+        "columnToMatchOn": "LineKey",
+        "valueToMatchOn": "={{ $json.LineKey }}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Status",
+              "fieldValue": "={{ $json.Status }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "58c670f0-d65c-40b5-92b3-ed02a8ced517",
+      "name": "Excel: update status by LineKey",
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2,
+      "position": [
+        512,
+        336
+      ],
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Microsoft Excel account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "worksheet",
+        "operation": "update",
+        "workbook": {
+          "__rl": true,
+          "value": "YOUR_WORKBOOK_ID",
+          "mode": "id",
+          "cachedResultName": "Example Procurement Workbook"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "YOUR_WORKSHEET_ID",
+          "mode": "id",
+          "cachedResultName": "Example Orders"
+        },
+        "columnToMatchOn": "OrderNo",
+        "valueToMatchOn": "={{ $json.OrderNo }}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Status",
+              "fieldValue": "={{ $json.Status }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "07d584b1-9138-4ae9-9832-af83125c8a1a",
+      "name": "Excel: update status by OrderNo",
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2,
+      "position": [
+        192,
+        496
+      ],
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Microsoft Excel account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ ($json.from && ($json.from.text || ($json.from.value && $json.from.value[0] && $json.from.value[0].address))) || '' }}",
+              "rightValue": "amazon.co.uk",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              },
+              "id": "cc364b89-92e7-4dbf-a2d8-6a1f1c476995"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "77c1e716-1aa0-474e-89f9-b489a88553b0",
+      "name": "Is Amazon?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1376,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 2000, messages: [ { role: 'user', content: 'You log procurement emails. Output RAW JSON only (no code fences). Classify docType from the MAIN event, weighting the Subject line heavily: order = the order was placed, received or confirmed (a Shipping fee line does NOT mean it shipped); dispatch = items shipped or on the way; delivery = items delivered or arrived; invoice = a bill; other. status matches the event: order Ordered, dispatch Dispatched, delivery Delivered, invoice Ordered, or Cancelled/Returned/Refunded. Fields: docType, supplier, supplier_url (the supplier website shown, e.g. www.example.com; empty if not shown), buyer, order_ref (the order or reference number exactly as shown, keep dashes; not the tracking number), order_date (YYYY-MM-DD; if the email does not state a date, use the Received date below), currency, status, link (customer-facing http URL else empty), tracking (the carrier tracking or parcel number if shown; else empty), carrier (the courier company if shown, e.g. Royal Mail/DPD; else empty), items (an ARRAY with one element per distinct PRODUCT, each having: product (short recognisable name), sku (the supplier catalogue/product/item number for this line, e.g. ITEM-001; empty if none), volume, unit, quantity, unit_price, net, gross). List every product as its own element of items. Do NOT include shipping, carriage, fuel surcharge, minimum order charge, handling or VAT lines as items. Use empty string if unknown.\\n\\nReceived: ' + ($json.date || '') + '\\nSubject: ' + ($json.subject || '') + '\\nFrom: ' + (($json.from && ($json.from.text || ($json.from.value && $json.from.value[0] && $json.from.value[0].address))) || '') + '\\n\\nBody:\\n' + ($json.text || $json.html || '') }] }) }}",
+        "options": {}
+      },
+      "id": "cc932c38-9ac0-4ed7-bc55-7502ed5b38cf",
+      "name": "Classify procurement message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -768,
+        512
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nconst toSerial = (s) => { if(!s) return ''; const m=String(s).match(/(\\d{4})-(\\d{2})-(\\d{2})/); if(!m) return s; const d=Date.UTC(+m[1],+m[2]-1,+m[3]); return Math.floor((d-Date.UTC(1899,11,30))/86400000); };\nconst normRef = (s) => String(s || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();\nconst short = (p) => { if(!p) return ''; let s = String(p).split(/,\\s+/)[0].trim(); return s.length>50 ? s.slice(0,50).trim()+'…' : s; };\nconst store = $getWorkflowStaticData('global');\nstore.supplierSites = store.supplierSites || {};\nstore.knownKeys = store.knownKeys || {};\nstore.knownProducts = store.knownProducts || {};\nstore.trackingMap = store.trackingMap || {};\nconst today = new Date().toISOString().slice(0,10);\nconst SUPPLIER_SITES = [];\nfunction cleanDomain(u){ if(!u) return ''; let s=String(u).trim().toLowerCase(); s=s.replace(/^https?:\\/\\//,'').replace(/^www\\./,'').replace(/^mail\\./,'').replace(/[\\/?#].*$/,'').trim(); return /^[a-z0-9.-]+\\.[a-z]{2,}$/.test(s)?s:''; }\nfunction domainFor(supplier, learnedUrl){ const s=String(supplier||'').trim().toLowerCase(); if(!s) return ''; for (const [k,dom] of SUPPLIER_SITES) if (s.includes(k)) return dom; if (store.supplierSites[s]) return store.supplierSites[s]; const dom=cleanDomain(learnedUrl); if (dom){ store.supplierSites[s]=dom; return dom; } return ''; }\nfunction itemLink(supplier, product, learnedUrl){ const p=String(product||'').split(/\\s+/).slice(0,8).join(' ').slice(0,80).trim(); const dom=domainFor(supplier, learnedUrl); if (dom && p) return 'https://www.google.com/search?q='+encodeURIComponent('site:'+dom+' '+p); if (dom) return 'https://'+dom; const q=(String(supplier||'')+' '+p).trim(); return q?'https://www.google.com/search?q='+encodeURIComponent(q):''; }\nfunction priceOf(it, cur){ const a=(it.gross!==undefined&&it.gross!=='')?it.gross:(it.net!==undefined&&it.net!==''?it.net:it.unit_price); if(a===''||a===null||a===undefined) return ''; return (cur&&cur!=='GBP')?(cur+' '+a):a; }\nfunction realProduct(p){ const s = short(p || ''); return (s && !/^[\\d\\W]+$/.test(s)) ? s : ''; }\nfor (const item of $input.all()) {\n  const parts = (item.json && item.json.content) || [];\n  const textPart = parts.find(p => p.type === 'text') || parts[0] || {};\n  let raw = (textPart.text || '').replace(/```json|```/gi, '').trim();\n  let d = {};\n  try { d = JSON.parse(raw); } catch (e) { continue; }\n  const ref = normRef(d.order_ref || d.invoice_no || '');\n  if (d.tracking) { const tk = normRef(d.tracking); if (tk && ref) store.trackingMap[tk] = ref; }\n  const who = String(d.buyer || '').split('/')[0].trim();\n  const cur = String(d.currency || '').toUpperCase();\n  const supplier = d.supplier || '';\n  const dt = String(d.docType || '').toLowerCase();\n  const isNew = ['order','invoice','confirmation','acknowledgement'].includes(dt);\n  const st = String(d.status || '').trim();\n  let items = Array.isArray(d.items) ? d.items : [];\n  if (!items.length && (d.product)) items = [{ product:d.product, sku:d.sku, volume:d.volume, unit:d.unit, quantity:d.quantity, unit_price:d.unit_price, net:d.net, gross:d.gross }];\n  if (isNew) {\n    const goodItems = items.filter(it => realProduct(it.product));\n    if (!goodItems.length) continue;\n    for (const it of goodItems) {\n      const prod = realProduct(it.product);\n      const sku = String(it.sku || '').trim();\n      const skuN = sku.replace(/[^A-Za-z0-9]/g,'').toUpperCase();\n      const keyPart = skuN || prod;\n      const productLink = (d.link && /^https?:/i.test(d.link) && !/wp-admin/i.test(d.link)) ? d.link : '';\n      const url = productLink || itemLink(supplier, prod, d.supplier_url);\n      if (ref) { store.knownKeys[ref]=true; store.knownKeys[ref+'|'+keyPart]=true; }\n      store.knownProducts[prod]=true;\n      out.push({ json: {\n        emailType:'confirmation', Date: toSerial(d.invoice_date || d.order_date || ''), Who: who,\n        product: prod, SKU: sku, volume: it.volume || '', State: it.unit || '', Items: it.quantity || '',\n        'Price (Inclu. VAT)': priceOf(it, cur), Supplier: supplier, URL: url,\n        Status: st || 'Ordered', 'Estimated delivery date': '',\n        'Invoice sent to accountant': (dt==='invoice') ? 'Yes' : '',\n        OrderNo: ref, LineKey: ref + '|' + keyPart }});\n    }\n  } else {\n    if (!/^(dispatched|out for delivery|delivered|cancelled|returned|refunded)$/i.test(st)) continue;\n    const named = items.filter(it => realProduct(it.product) || String(it.sku||'').trim());\n    if (named.length) {\n      for (const it of named) {\n        const prod = realProduct(it.product);\n        const sku = String(it.sku || '').trim();\n        out.push({ json:{ emailType:'update', matchBy:'line', Status: st, product: prod, sku: sku, orderNos: ref ? [ref] : [], Supplier: supplier } });\n      }\n    } else if (ref) {\n      if (store.knownKeys[ref]) out.push({ json:{ emailType:'update', matchBy:'order', Status: st, OrderNo: ref } });\n      else out.push({ json:{ emailType:'needsReview', When: today, Reason:'Supplier status update for an order not in the sheet', Supplier: supplier, Product:'', OrderNo: ref, Status: st, Subject: ($json.subject || '') } });\n    }\n  }\n}\nreturn out;"
+      },
+      "id": "9a628ff3-e786-4c78-8e9c-9a7965acc5cd",
+      "name": "Parse extraction result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ Object.keys($binary || {}).some(k => ($binary[k].mimeType || '').includes('pdf')) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "id": "c22b2966-7560-42de-ab8a-5e850d6c8c98"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d4d15947-f545-475b-9a95-c796cbb6d301",
+      "name": "Has PDF?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1120,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nconst items = $input.all();\nfor (let i = 0; i < items.length; i++) {\n  const bin = items[i].binary || {};\n  const key = Object.keys(bin).find(k => String(bin[k].mimeType || '').includes('pdf'));\n  if (!key) continue;\n  const buf = await this.helpers.getBinaryDataBuffer(i, key);\n  const b64 = buf.toString('base64');\n  const instructions = 'You log procurement emails into a spreadsheet. Output RAW JSON only, no code fences, no prose. Schema: {\"docType\":\"order|invoice|dispatch|delivery|other\",\"supplier\":\"\",\"buyer\":\"\",\"order_ref\":\"the order or PO reference exactly as shown, keep punctuation\",\"invoice_no\":\"\",\"invoice_date\":\"YYYY-MM-DD\",\"currency\":\"\",\"status\":\"Ordered|Dispatched|Out for delivery|Delivered|Cancelled|Returned|Refunded or empty\",\"supplier_url\":\"supplier website if shown else empty\",\"tracking\":\"\",\"carrier\":\"\",\"items\":[{\"product\":\"short recognisable product name\",\"sku\":\"supplier catalogue/product/item number for this line, empty if none\",\"volume\":\"\",\"unit\":\"\",\"quantity\":\"\",\"unit_price\":\"\",\"net\":\"\",\"gross\":\"\"}]}. List every distinct PRODUCT as its own item. Do NOT include shipping, carriage, fuel surcharge, minimum order charge, handling or VAT lines as items. Use empty string for anything not shown.';\n  const body = { model: 'claude-sonnet-5', max_tokens: 2000, messages: [ { role: 'user', content: [ { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } }, { type: 'text', text: instructions } ] } ] };\n  out.push({ json: { claudeBody: JSON.stringify(body) } });\n}\nreturn out;"
+      },
+      "id": "3fd7b509-5e8c-4506-9e6b-cb42d7aefe06",
+      "name": "Build document extraction request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -880,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.claudeBody }}",
+        "options": {}
+      },
+      "id": "ddd4db44-92bc-4fe6-8a32-21aadf8dd9a6",
+      "name": "Extract invoice fields",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -672,
+        272
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "(from:amazon.co.uk OR from:ebay.com OR from:ebay.co.uk OR filename:pdf OR subject:(order OR ordered OR purchase OR purchased OR confirmation OR confirmed OR dispatch OR dispatched OR delivery OR delivered OR shipped OR shipping OR shipment OR courier OR package OR parcel OR tracking OR arriving OR invoice OR receipt OR statement OR refund OR refunded OR return OR returned OR cancel OR cancelled OR payment OR paid)) in:inbox -from:operations@example.com"
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "id": "ccd3fbd1-7e9e-4cfc-82f6-0fda994a18f0",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1920,
+        -304
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const store = $getWorkflowStaticData('global');\nstore.sentInvoices = store.sentInvoices || {};\nconst out = [];\nconst items = $input.all();\nfor (let i = 0; i < items.length; i++) {\n  const json = items[i].json || {};\n  const bin = items[i].binary || {};\n  const fromRaw = (json.from && (json.from.text || (json.from.value && json.from.value[0] && json.from.value[0].address))) || '';\n  if (/operations@example\\.com/i.test(fromRaw)) continue;            // never re-forward our own sends (loop guard)\n  const msgId = json.id || json.messageId || '';\n  if (msgId && store.sentInvoices[msgId]) continue;                       // already forwarded this email\n  const pdfKeys = Object.keys(bin).filter(k => String(bin[k].mimeType || '').includes('pdf'));\n  const picked = pdfKeys.filter(k => /invoice|receipt|vat/i.test(bin[k].fileName || '')); // STRICT: filename must say invoice/receipt/vat\n  if (!picked.length) continue;\n  const supplier = (fromRaw.split('<')[0].trim()) || 'supplier';\n  for (const key of picked) {\n    out.push({ json: { to: 'accountant-inbox@example.com', subject: 'Invoice – ' + supplier, file: bin[key].fileName || 'invoice.pdf' }, binary: { data: bin[key] } });\n  }\n  if (msgId) store.sentInvoices[msgId] = true;\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        96
+      ],
+      "id": "e7ad1da1-d487-4dcf-8e01-edca622ccd90",
+      "name": "Pick invoice PDF"
+    },
+    {
+      "parameters": {
+        "sendTo": "accountant-inbox@example.com",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "Automated invoice forward from operations@example.com",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {
+                "property": "=data"
+              }
+            ]
+          },
+          "ccList": "you@example.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -672,
+        96
+      ],
+      "id": "27ae2e48-b691-4124-b2f8-db61d1ed6c52",
+      "name": "Send invoice to accountant",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "={{ $json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -1632,
+        -304
+      ],
+      "id": "3e2f264b-f20d-4b42-87ef-786b91166f43",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "workbook": {
+          "__rl": true,
+          "value": "YOUR_WORKBOOK_ID",
+          "mode": "id",
+          "cachedResultName": "Example Procurement Workbook"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "YOUR_WORKSHEET_ID",
+          "mode": "id",
+          "cachedResultName": "Example Review"
+        },
+        "table": {
+          "__rl": true,
+          "value": "YOUR_TABLE_ID",
+          "mode": "id",
+          "cachedResultName": "NeedsReview"
+        },
+        "dataMode": "autoMap",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2,
+      "position": [
+        496,
+        128
+      ],
+      "name": "Append Example Review",
+      "id": "be8438d1-2dfd-44de-85c1-a3fcfe14e83f",
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Microsoft Excel account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.emailType }}",
+                    "rightValue": "confirmation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "84fa3532-857f-4699-9fd3-96d7efaa05ac"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "f1ae0013-2013-434d-b9b6-0621d1d5f941",
+                    "leftValue": "={{ $json.emailType }}",
+                    "rightValue": "needsReview",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.matchBy }}",
+                    "rightValue": "line",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fa790c4f-0e19-4733-9699-2ab28230e724"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "aca4ee62-817e-4b84-9c2f-911678d33467",
+                    "leftValue": "={{ $json.matchBy }}",
+                    "rightValue": "order",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "356913bd-87f7-40fe-9b40-997967f781c8",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -160,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "operation": "getRows",
+        "workbook": {
+          "__rl": true,
+          "value": "YOUR_WORKBOOK_ID",
+          "mode": "id",
+          "cachedResultName": "Example Procurement Workbook"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "YOUR_WORKSHEET_ID",
+          "mode": "id",
+          "cachedResultName": "Example Orders"
+        },
+        "table": {
+          "__rl": true,
+          "value": "YOUR_TABLE_ID",
+          "mode": "id",
+          "cachedResultName": "Orders"
+        },
+        "returnAll": true,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2,
+      "position": [
+        -1312,
+        -304
+      ],
+      "name": "Read log",
+      "id": "a7d780e5-4865-4040-9b89-f96774815a79",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Microsoft Excel account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $('Read log').all().map(i => i.json || {});\nconst norm = s => String(s || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();\nconst TERMINAL = /^(delivered|cancelled|returned|refunded)$/i;\nconst NEGATIVE = /^(cancelled|returned|refunded)$/i;\nconst ORDER = ['ordered','dispatched','out for delivery','delivered'];\nconst rank = s => { const i = ORDER.indexOf(String(s||'').toLowerCase().trim()); return i < 0 ? 0 : i; };\nconst today = new Date().toISOString().slice(0,10);\nconst out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const prod = String(j.product || '').trim();\n  const usku = norm(j.sku);\n  const st = String(j.Status || '').trim();\n  const orderNos = (Array.isArray(j.orderNos) ? j.orderNos : []).map(norm).filter(Boolean);\n  let cands = [];\n  if (usku) cands = rows.filter(r => norm(r.SKU) === usku);\n  if (!cands.length && prod) cands = rows.filter(r => String(r.product || '').trim() === prod);\n  if (orderNos.length) {\n    const byOrder = cands.filter(r => orderNos.includes(norm(r.OrderNo)));\n    if (byOrder.length) {\n      cands = byOrder;\n    } else if (NEGATIVE.test(st)) {\n      out.push({ json: { emailType:'needsReview', When: today, Reason:'Cancel/return/refund for an order not in the sheet (item exists under a different order)', Supplier: j.Supplier || '', Product: prod || j.sku || '', OrderNo: (j.orderNos||[]).join(', '), Status: st, Subject: j.Subject || '' } });\n      continue;\n    }\n  }\n  const open = cands.filter(r => !TERMINAL.test(String(r.Status || '')));\n  let pick = null;\n  if (open.length) pick = open.find(r => rank(r.Status) < rank(st)) || open[0];\n  else if (cands.length) pick = cands[cands.length - 1];\n  if (pick && pick.LineKey) {\n    out.push({ json: { emailType:'update', matchBy:'line', LineKey: pick.LineKey, Status: st } });\n  } else {\n    out.push({ json: { emailType:'needsReview', When: today, Reason: cands.length ? 'All matching rows already closed - status not applied' : 'No matching product/SKU row found', Supplier: j.Supplier || '', Product: prod || j.sku || '', OrderNo: (j.orderNos||[]).join(', '), Status: st, Subject: j.Subject || '' } });\n  }\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        256
+      ],
+      "id": "29e5938c-babf-44fe-a8bd-21bfffbd5350",
+      "name": "Resolve row"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5bc08677-b8b2-4ade-8760-9840326ccbaf",
+              "leftValue": "={{ $json.emailType }}",
+              "rightValue": "needsReview",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        240,
+        256
+      ],
+      "id": "40cc6bb0-ae6b-4882-914a-02da77c64585",
+      "name": "Route resolved (IF)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nconst store = $getWorkflowStaticData('global');\nstore.trackingMap = store.trackingMap || {};\nconst today = new Date().toISOString().slice(0,10);\nconst normTrk = s => String(s || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();\nfor (const item of $input.all()) {\n  const m = item.json;\n  const subject = m.subject || (m.headers && m.headers.subject) || '';\n  const subjLc = subject.toLowerCase();\n  const fromRaw = (m.from && (m.from.text || (m.from.value && m.from.value[0] && m.from.value[0].address))) || '';\n  const text = m.text || '';\n  let html = String(m.html || '');\n  html = html.replace(/<(style|script)[\\s\\S]*?<\\/\\1>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&#x27;/g, \"'\").replace(/&amp;/g, '&').replace(/\\s+/g, ' ');\n  const body = (text && text.trim()) ? text : html;\n  const carrier = /royalmail/i.test(fromRaw) ? 'Royal Mail' : /dpd/i.test(fromRaw) ? 'DPD' : /dhl/i.test(fromRaw) ? 'DHL' : /fedex/i.test(fromRaw) ? 'FedEx' : /ups\\.com/i.test(fromRaw) ? 'UPS' : /parcelforce/i.test(fromRaw) ? 'Parcelforce' : (/evri|hermes/i.test(fromRaw) ? 'Evri' : 'Courier');\n  let trk = '';\n  const mrm = body.match(/\\b([A-Z]{2}\\d{9}GB)\\b/);\n  const mdpd = body.match(/\\b(\\d{4}\\s?\\d{4}\\s?\\d{3}\\s?\\d{3})\\b/);\n  if (mrm) trk = mrm[1];\n  else if (mdpd) trk = mdpd[1];\n  else { const mg = body.match(/\\b([A-Z0-9]{10,22})\\b/); if (mg) trk = mg[1]; }\n  const key = normTrk(trk);\n  let status = '';\n  if (/delivered/i.test(subjLc)) status = 'Delivered';\n  else if (/out for delivery|delivered today|due to be delivered|will be delivered|being delivered/i.test(subjLc)) status = 'Out for delivery';\n  else if (/on its way|on the way|expecting|in transit|shipped|dispatched|with its courier/i.test(subjLc)) status = 'Dispatched';\n  else if (/delay/i.test(subjLc)) status = 'Delayed';\n  else continue;\n  const orderRef = (key && store.trackingMap[key]) ? store.trackingMap[key] : '';\n  if (orderRef) {\n    out.push({ json: { emailType:'update', matchBy:'order', Status: status, OrderNo: orderRef } });\n  } else {\n    out.push({ json: { emailType:'needsReview', When: today, Reason: key ? ('Courier ('+carrier+') update - tracking '+trk+' not linked to an order yet') : ('Courier ('+carrier+') update - no tracking number found'), Supplier: carrier, Product: '', OrderNo: '', Status: status, Subject: subject } });\n  }\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -784,
+        -224
+      ],
+      "id": "fdfe7923-aed0-43dc-8eee-8224d45207d8",
+      "name": "Parse courier email"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d2f628fe-ece8-4f67-8fc6-768f491f6956",
+              "leftValue": "={{ ($json.from && ($json.from.text || ($json.from.value && $json.from.value[0] && $json.from.value[0].address))) || '' }}",
+              "rightValue": "royalmail\\.com|dpd\\.co\\.uk|dhl\\.|fedex|ups\\.com|parcelforce|evri",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1616,
+        64
+      ],
+      "id": "58255297-92a5-4c54-9a89-f630849e1890",
+      "name": "Is courier?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const store = $getWorkflowStaticData('global');\nstore.sentInvoices = store.sentInvoices || {};\nconst out = [];\nfor (const item of $input.all()) {\n  const m = item.json;\n  const msgId = m.id || m.messageId || (m.headers && m.headers['message-id']) || '';\n  const subject = m.subject || (m.headers && m.headers.subject) || '';\n  const text = m.text || '';\n  const html = m.html || '';\n  const bin = item.binary || {};\n  const hasPdf = Object.keys(bin).some(k => String(bin[k].mimeType || '').includes('pdf'));\n  if (hasPdf) continue;\n  const subjLc = subject.toLowerCase();\n  const isReceipt = /\\breceipt\\b|\\binvoice\\b|vat invoice|payment (received|confirmation|successful)/.test(subjLc);\n  if (!isReceipt) continue;\n  if (msgId && store.sentInvoices[msgId]) continue;\n  const fromRaw = (m.from && (m.from.text || (m.from.value && m.from.value[0] && m.from.value[0].address))) || '';\n  const supplier = (fromRaw.split('<')[0].trim()) || 'supplier';\n  const bodyHtml = (html && html.trim()) ? html : ('<pre>' + String(text).replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '</pre>');\n  out.push({ json: {\n    to: 'accountant-inbox@example.com',\n    cc: 'you@example.com',\n    subject: 'Fwd: ' + subject,\n    message: '<p>Automated receipt forward from operations@example.com (no PDF attached; receipt is in the email below).</p><hr>' + bodyHtml,\n    supplier\n  }});\n  if (msgId) store.sentInvoices[msgId] = true;\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -880,
+        720
+      ],
+      "id": "4a6447a6-4b3a-46cf-95ec-397c23a3b066",
+      "name": "Pick receipt email (no PDF)"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.message }}",
+        "options": {
+          "ccList": "={{ $json.cc }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -672,
+        720
+      ],
+      "id": "da91bc03-52ae-458b-b361-c2ae98eed700",
+      "name": "Forward receipt to accountant",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $('Read log').all().map(i => i.json || {});\nconst seen = new Set(rows.map(r => String(r.LineKey || '').trim()).filter(Boolean));\nconst out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const lk = String(j.LineKey || '').trim();\n  if (lk && seen.has(lk)) continue;\n  if (lk) seen.add(lk);\n  out.push({ json: j });\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        -64
+      ],
+      "id": "72236a89-cccf-4bda-b93c-3b3ba9c362e8",
+      "name": "Skip duplicate row"
+    }
+  ],
+  "connections": {
+    "Parse Amazon email": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Amazon?": {
+      "main": [
+        [
+          {
+            "node": "Parse Amazon email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Has PDF?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify procurement message": {
+      "main": [
+        [
+          {
+            "node": "Parse extraction result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse extraction result": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has PDF?": {
+      "main": [
+        [
+          {
+            "node": "Build document extraction request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pick invoice PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Classify procurement message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pick receipt email (no PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build document extraction request": {
+      "main": [
+        [
+          {
+            "node": "Extract invoice fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract invoice fields": {
+      "main": [
+        [
+          {
+            "node": "Parse extraction result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick invoice PDF": {
+      "main": [
+        [
+          {
+            "node": "Send invoice to accountant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Read log",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Is courier?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Skip duplicate row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Example Review",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resolve row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Excel: update status by OrderNo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve row": {
+      "main": [
+        [
+          {
+            "node": "Route resolved (IF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route resolved (IF)": {
+      "main": [
+        [
+          {
+            "node": "Append Example Review",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Excel: update status by LineKey",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse courier email": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is courier?": {
+      "main": [
+        [
+          {
+            "node": "Parse courier email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Amazon?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick receipt email (no PDF)": {
+      "main": [
+        [
+          {
+            "node": "Forward receipt to accountant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Skip duplicate row": {
+      "main": [
+        [
+          {
+            "node": "Excel: add new order row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  }
+}
