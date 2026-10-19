@@ -1,0 +1,3 @@
+#!/bin/sh
+# Blocks a push if the secret scan finds anything that looks like a credential.
+python3 evals/check_no_secrets.py || { echo "Push blocked: possible credential found."; exit 1; }

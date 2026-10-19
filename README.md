@@ -38,6 +38,10 @@ When configured and executed, the extraction nodes send message content or PDF c
 
 Node credentials are references to n8n's credential store, not embedded keys. Keep execution exports, attachments, local credentials and test data out of Git. The repository includes no deployment credentials or live resource links.
 
+## Evaluation
+
+The `evals/` folder contains a test harness for the extraction step. It runs 30 synthetic emails through two prompt versions, scores each field against a written expected answer, and reports accuracy. It uses no real data, the API key is read from an environment variable only, and an offline scan blocks pushes that contain credentials. See `evals/README.md`.
+
 ## Limitations
 
 The template requires account-specific configuration. Parser coverage, matching decisions and LLM output must be tested on synthetic inputs before use; uncertain extraction is not a substitute for human review. It is not a guarantee of accounting correctness.

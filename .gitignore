@@ -17,3 +17,6 @@ backups/
 exports/
 executions/
 attachments/
+__pycache__/
+*.pyc
+evals/results/*.local.json

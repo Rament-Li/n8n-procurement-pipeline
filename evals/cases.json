@@ -1,0 +1,728 @@
+[
+  {
+    "id": "C01",
+    "tag": "order-basic",
+    "received": "2026-09-03",
+    "subject": "Order confirmation NG-48213",
+    "from": "Northgate Lab Supplies <orders@northgatelab.example.com>",
+    "body": "Hello Sam,\n\nThank you for your order with Northgate Lab Supplies.\n\nOrder number: NG-48213\nOrder date: 3 September 2026\n\nItem                                      Qty    Price\nNitrile gloves, size M, box of 100\nCode: NG-GLV-M100                          5     £32.00\n\nSubtotal: £32.00\nDelivery: £4.95\nVAT (20%): £7.39\nTotal: £44.34\n\nWe will email you when your order has been dispatched.\n\nNorthgate Lab Supplies Ltd. Registered in England.",
+    "expected": {
+      "docType": "order",
+      "supplier": "Northgate Lab Supplies",
+      "order_ref": "NG-48213",
+      "status": "Ordered",
+      "order_date": "2026-09-03",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "nitrile gloves",
+          "sku": "NG-GLV-M100",
+          "quantity": 5
+        }
+      ]
+    }
+  },
+  {
+    "id": "C02",
+    "tag": "order-multi-item",
+    "received": "2026-09-07",
+    "subject": "Your Brightwell Scientific order BW10432",
+    "from": "Brightwell Scientific <sales@brightwell.example.com>",
+    "body": "Thank you for ordering from Brightwell Scientific.\nOrder: BW10432\nPlaced on: 7 September 2026\n\nBW-PT-200   Pipette tips 200 µl, rack of 96        10 x £3.20\nBW-MCT-15   Microcentrifuge tubes 1.5 ml, bag of 500    4 x £8.75\nBW-PAR-M    Parafilm M roll                          1 x £21.00\n\nCarriage: £6.50\nTotal (inc. VAT): £113.40",
+    "expected": {
+      "docType": "order",
+      "supplier": "Brightwell Scientific",
+      "order_ref": "BW10432",
+      "status": "Ordered",
+      "order_date": "2026-09-07",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "pipette tips",
+          "sku": "BW-PT-200",
+          "quantity": 10
+        },
+        {
+          "product": "microcentrifuge tubes",
+          "sku": "BW-MCT-15",
+          "quantity": 4
+        },
+        {
+          "product": "parafilm",
+          "sku": "BW-PAR-M",
+          "quantity": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "C03",
+    "tag": "order-no-date",
+    "received": "2026-09-10",
+    "subject": "Thanks for your order",
+    "from": "Oakfield Stationery <hello@oakfield.example.com>",
+    "body": "Hi Sam,\nWe have received your order and will start picking it shortly.\n\nReference: OF/55821\nA4 copier paper, 500 sheets, 5 reams per box (OF-PAP-A4) x 2 - £31.80\n\nDelivery: free\nTotal: £31.80",
+    "expected": {
+      "docType": "order",
+      "supplier": "Oakfield Stationery",
+      "order_ref": "OF/55821",
+      "status": "Ordered",
+      "order_date": "2026-09-10",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "copier paper",
+          "sku": "OF-PAP-A4",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "C04",
+    "tag": "order-eur",
+    "received": "2026-09-05",
+    "subject": "Order confirmation TC-7741-B",
+    "from": "Tarn & Co Electronics <sales@tarnco.example.com>",
+    "body": "Dear customer,\nYour order has been confirmed.\n\nOrder reference: TC-7741-B\nOrder date: 4th September 2026\n\nTC-USBC-1M  USB-C cable 1 m           6 x €4.10\nTC-CT-200   Cable ties 200 mm, pack of 100    2 x €3.30\n\nTotal: €31.20 (VAT included)",
+    "expected": {
+      "docType": "order",
+      "supplier": "Tarn & Co Electronics",
+      "order_ref": "TC-7741-B",
+      "status": "Ordered",
+      "order_date": "2026-09-04",
+      "currency": "EUR",
+      "items": [
+        {
+          "product": "usb-c cable",
+          "sku": "TC-USBC-1M",
+          "quantity": 6
+        },
+        {
+          "product": "cable ties",
+          "sku": "TC-CT-200",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "C05",
+    "tag": "order-shipping-fee-trap",
+    "received": "2026-09-12",
+    "subject": "Order HP-2209-76 confirmed - includes shipping fee",
+    "from": "Harbourline Packaging <service@harbourline.example.com>",
+    "body": "Your order has been confirmed and is being prepared.\n\nOrder number: HP-2209-76\nOrder date: 12 September 2026\n\nHP-BOX-3020  Corrugated boxes 300 x 200 x 150 mm, pack of 25    4 x £18.40\nShipping fee: £5.00\nVAT: £15.72\nTotal: £94.32",
+    "expected": {
+      "docType": "order",
+      "supplier": "Harbourline Packaging",
+      "order_ref": "HP-2209-76",
+      "status": "Ordered",
+      "order_date": "2026-09-12",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "corrugated boxes",
+          "sku": "HP-BOX-3020",
+          "quantity": 4
+        }
+      ]
+    }
+  },
+  {
+    "id": "C06",
+    "tag": "order-extra-charges",
+    "received": "2026-09-14",
+    "subject": "Quillon order QC-90016 received",
+    "from": "Quillon Cleanroom Co <orders@quillon.example.com>",
+    "body": "Order QC-90016 received on 14 September 2026.\n\nQC-WIPE-150   Cleanroom wipes, pack of 150     6 x £11.90\nHandling charge: £3.00\nMinimum order charge: £5.00\nVAT: £15.88\nTotal: £95.28",
+    "expected": {
+      "docType": "order",
+      "supplier": "Quillon Cleanroom Co",
+      "order_ref": "QC-90016",
+      "status": "Ordered",
+      "order_date": "2026-09-14",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "cleanroom wipes",
+          "sku": "QC-WIPE-150",
+          "quantity": 6
+        }
+      ]
+    }
+  },
+  {
+    "id": "C07",
+    "tag": "order-slash-reference",
+    "received": "2026-09-15",
+    "subject": "Order confirmation OF/55830",
+    "from": "Oakfield Stationery <hello@oakfield.example.com>",
+    "body": "Order confirmation\n\nOrder no: OF/55830\nDate: 15/09/2026 (15 September)\n\nOF-PEN-BK12   Gel pens, black, box of 12        3 x £5.10\nOF-SN-76      Sticky notes 76 x 76 mm, pack of 12   2 x £6.40\n\nDelivery: £3.95\nTotal: £32.05",
+    "expected": {
+      "docType": "order",
+      "supplier": "Oakfield Stationery",
+      "order_ref": "OF/55830",
+      "status": "Ordered",
+      "order_date": "2026-09-15",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "gel pens",
+          "sku": "OF-PEN-BK12",
+          "quantity": 3
+        },
+        {
+          "product": "sticky notes",
+          "sku": "OF-SN-76",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "C08",
+    "tag": "order-terse",
+    "received": "2026-09-16",
+    "subject": "Order received",
+    "from": "Tarn & Co Electronics <sales@tarnco.example.com>",
+    "body": "Thanks! Ordered: 2 x Mini breadboard (TC-BB-170), ref TC-7752-A. Total £9.80.",
+    "expected": {
+      "docType": "order",
+      "supplier": "Tarn & Co Electronics",
+      "order_ref": "TC-7752-A",
+      "status": "Ordered",
+      "order_date": "2026-09-16",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "breadboard",
+          "sku": "TC-BB-170",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "C09",
+    "tag": "dispatch-tracking",
+    "received": "2026-09-18",
+    "subject": "Your order HP-2209-77 has shipped",
+    "from": "Harbourline Packaging <service@harbourline.example.com>",
+    "body": "Good news, your order is on its way.\n\nOrder: HP-2209-77\nCarrier: Swiftpost\nTracking number: SP123456789GB\n\nItems in this parcel:\n- Packing tape, 48 mm x 66 m, box of 36 (HP-TAPE-48) x 2",
+    "expected": {
+      "docType": "dispatch",
+      "supplier": "Harbourline Packaging",
+      "order_ref": "HP-2209-77",
+      "status": "Dispatched",
+      "order_date": null,
+      "currency": null,
+      "items": [
+        {
+          "product": "packing tape",
+          "sku": "HP-TAPE-48",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "C10",
+    "tag": "dispatch-note",
+    "received": "2026-09-09",
+    "subject": "Despatch note BW10432",
+    "from": "Brightwell Scientific <sales@brightwell.example.com>",
+    "body": "DESPATCH NOTE\nYour order reference: BW10432\nCourier: Redline Couriers\nConsignment: RC-0099-2231-GB\n\nBW-PT-200   Pipette tips 200 µl, rack of 96    10\nBW-MCT-15   Microcentrifuge tubes 1.5 ml, bag of 500    4\nBW-PAR-M    Parafilm M roll    1",
+    "expected": {
+      "docType": "dispatch",
+      "supplier": "Brightwell Scientific",
+      "order_ref": "BW10432",
+      "status": "Dispatched",
+      "order_date": null,
+      "currency": null,
+      "items": [
+        {
+          "product": "pipette tips",
+          "sku": "BW-PT-200",
+          "quantity": 10
+        },
+        {
+          "product": "microcentrifuge tubes",
+          "sku": "BW-MCT-15",
+          "quantity": 4
+        },
+        {
+          "product": "parafilm",
+          "sku": "BW-PAR-M",
+          "quantity": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "C11",
+    "tag": "dispatch-no-order-ref",
+    "received": "2026-09-19",
+    "subject": "Your parcel is on its way",
+    "from": "Quillon Cleanroom Co <orders@quillon.example.com>",
+    "body": "Your parcel has left our warehouse.\nCarrier: Parcelhawk\nTracking: PH-55820013\n\nContents: Cleanroom wipes, pack of 150 (QC-WIPE-150) x 6",
+    "expected": {
+      "docType": "dispatch",
+      "supplier": "Quillon Cleanroom Co",
+      "order_ref": "",
+      "status": "Dispatched",
+      "order_date": null,
+      "currency": null,
+      "items": [
+        {
+          "product": "cleanroom wipes",
+          "sku": "QC-WIPE-150",
+          "quantity": 6
+        }
+      ]
+    }
+  },
+  {
+    "id": "C12",
+    "tag": "delivery-basic",
+    "received": "2026-09-22",
+    "subject": "Delivered: your order QC-90017",
+    "from": "Quillon Cleanroom Co <orders@quillon.example.com>",
+    "body": "Your parcel was delivered on 22 September 2026 at 10:42.\nLeft with reception.\n\nOrder: QC-90017\nItems: Face masks type IIR, box of 50 (QC-MASK-IIR) x 4",
+    "expected": {
+      "docType": "delivery",
+      "supplier": "Quillon Cleanroom Co",
+      "order_ref": "QC-90017",
+      "status": "Delivered",
+      "order_date": null,
+      "currency": null,
+      "items": [
+        {
+          "product": "face masks",
+          "sku": "QC-MASK-IIR",
+          "quantity": 4
+        }
+      ]
+    }
+  },
+  {
+    "id": "C13",
+    "tag": "delivery-arrived",
+    "received": "2026-09-06",
+    "subject": "Your order NG-48213 has arrived",
+    "from": "Northgate Lab Supplies <orders@northgatelab.example.com>",
+    "body": "Your Northgate order has been delivered. Signed by: S Taylor.\n\nOrder NG-48213\nNitrile gloves, size M, box of 100 (NG-GLV-M100) x 5",
+    "expected": {
+      "docType": "delivery",
+      "supplier": "Northgate Lab Supplies",
+      "order_ref": "NG-48213",
+      "status": "Delivered",
+      "order_date": null,
+      "currency": null,
+      "items": [
+        {
+          "product": "nitrile gloves",
+          "sku": "NG-GLV-M100",
+          "quantity": 5
+        }
+      ]
+    }
+  },
+  {
+    "id": "C14",
+    "tag": "invoice-with-order-ref",
+    "received": "2026-09-05",
+    "subject": "Invoice INV-20931 for order NG-48213",
+    "from": "Northgate Lab Supplies <orders@northgatelab.example.com>",
+    "body": "INVOICE\nInvoice number: INV-20931\nInvoice date: 5 September 2026\nYour order: NG-48213\n\nNG-GLV-M100  Nitrile gloves, size M, box of 100    5 x £6.40 = £32.00\nDelivery: £4.95\nVAT: £7.39\nTotal due: £44.34\nPayment terms: 30 days",
+    "expected": {
+      "docType": "invoice",
+      "supplier": "Northgate Lab Supplies",
+      "order_ref": "NG-48213",
+      "status": "Ordered",
+      "order_date": null,
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "nitrile gloves",
+          "sku": "NG-GLV-M100",
+          "quantity": 5
+        }
+      ]
+    }
+  },
+  {
+    "id": "C15",
+    "tag": "invoice-no-order-ref",
+    "received": "2026-09-20",
+    "subject": "Invoice INV-77120",
+    "from": "Oakfield Stationery <hello@oakfield.example.com>",
+    "body": "Invoice INV-77120, dated 20 September 2026\n\nOF-PEN-BK12   Gel pens, black, box of 12     3 x £5.10 = £15.30\nVAT: £3.06\nTotal: £18.36",
+    "expected": {
+      "docType": "invoice",
+      "supplier": "Oakfield Stationery",
+      "order_ref": [
+        "",
+        "INV-77120"
+      ],
+      "status": "Ordered",
+      "order_date": null,
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "gel pens",
+          "sku": "OF-PEN-BK12",
+          "quantity": 3
+        }
+      ]
+    }
+  },
+  {
+    "id": "C16",
+    "tag": "invoice-multi-line",
+    "received": "2026-09-11",
+    "subject": "Tax invoice BW-INV-5521 - order BW10432",
+    "from": "Brightwell Scientific <sales@brightwell.example.com>",
+    "body": "TAX INVOICE BW-INV-5521\nOrder reference: BW10432\n\nBW-PT-200   Pipette tips 200 µl, rack of 96    10 x £3.20   £32.00\nBW-MCT-15   Microcentrifuge tubes 1.5 ml, bag of 500   4 x £8.75   £35.00\nBW-PAR-M    Parafilm M roll    1 x £21.00   £21.00\nCarriage   £6.50\nVAT   £18.90\nTotal   £113.40",
+    "expected": {
+      "docType": "invoice",
+      "supplier": "Brightwell Scientific",
+      "order_ref": "BW10432",
+      "status": "Ordered",
+      "order_date": null,
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "pipette tips",
+          "sku": "BW-PT-200",
+          "quantity": 10
+        },
+        {
+          "product": "microcentrifuge tubes",
+          "sku": "BW-MCT-15",
+          "quantity": 4
+        },
+        {
+          "product": "parafilm",
+          "sku": "BW-PAR-M",
+          "quantity": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "C17",
+    "tag": "cancellation",
+    "received": "2026-09-21",
+    "subject": "Order BW10433 cancelled",
+    "from": "Brightwell Scientific <sales@brightwell.example.com>",
+    "body": "As requested, we have cancelled order BW10433.\nCancelled item: Pipette tips 200 µl (BW-PT-200) x 10.\nA refund of £32.00 will follow within 5 working days.",
+    "expected": {
+      "docType": [
+        "other",
+        "order"
+      ],
+      "supplier": "Brightwell Scientific",
+      "order_ref": "BW10433",
+      "status": "Cancelled",
+      "order_date": null,
+      "currency": null,
+      "items": null
+    }
+  },
+  {
+    "id": "C18",
+    "tag": "refund",
+    "received": "2026-09-24",
+    "subject": "Refund processed - order OF/55821",
+    "from": "Oakfield Stationery <hello@oakfield.example.com>",
+    "body": "We have refunded £31.80 to your original payment method for order OF/55821.\nIt can take up to 5 working days to appear.",
+    "expected": {
+      "docType": [
+        "other",
+        "order"
+      ],
+      "supplier": "Oakfield Stationery",
+      "order_ref": "OF/55821",
+      "status": "Refunded",
+      "order_date": null,
+      "currency": null,
+      "items": null
+    }
+  },
+  {
+    "id": "C19",
+    "tag": "return",
+    "received": "2026-09-26",
+    "subject": "Return received for order QC-90017",
+    "from": "Quillon Cleanroom Co <orders@quillon.example.com>",
+    "body": "We have received your return for order QC-90017 (Face masks type IIR, box of 50 x 4) and will inspect it today.",
+    "expected": {
+      "docType": [
+        "other",
+        "order"
+      ],
+      "supplier": "Quillon Cleanroom Co",
+      "order_ref": "QC-90017",
+      "status": "Returned",
+      "order_date": null,
+      "currency": null,
+      "items": null
+    }
+  },
+  {
+    "id": "C20",
+    "tag": "marketing-newsletter",
+    "received": "2026-10-01",
+    "subject": "October offers: 20% off consumables",
+    "from": "Northgate Lab Supplies <orders@northgatelab.example.com>",
+    "body": "October offers\n\nThis month only, 20% off selected consumables:\n- Nitrile gloves, size M, box of 100 (NG-GLV-M100) now £5.12\n- Safety glasses, clear (NG-SAF-CL) now £2.40\n- Lab coats, size L (NG-COAT-L) now £14.00\n\nUse code OCT20 at checkout. Unsubscribe at any time.",
+    "expected": {
+      "docType": "other",
+      "supplier": "Northgate Lab Supplies",
+      "order_ref": "",
+      "status": "",
+      "order_date": null,
+      "currency": null,
+      "items": []
+    }
+  },
+  {
+    "id": "C21",
+    "tag": "abandoned-basket",
+    "received": "2026-10-02",
+    "subject": "You left something in your basket",
+    "from": "Oakfield Stationery <hello@oakfield.example.com>",
+    "body": "Hi Sam, you left these in your basket:\n- Gel pens, black, box of 12 (OF-PEN-BK12) x 3\n- Stapler, heavy duty (OF-STP-HD) x 1\n\nComplete your order today and get free delivery.",
+    "expected": {
+      "docType": "other",
+      "supplier": "Oakfield Stationery",
+      "order_ref": "",
+      "status": "",
+      "order_date": null,
+      "currency": null,
+      "items": []
+    }
+  },
+  {
+    "id": "C22",
+    "tag": "account-notice",
+    "received": "2026-10-02",
+    "subject": "Reset your password",
+    "from": "Brightwell Scientific <sales@brightwell.example.com>",
+    "body": "We received a request to reset the password for your Brightwell account.\nClick the button below within 24 hours. If you did not ask for this, ignore this email.",
+    "expected": {
+      "docType": "other",
+      "supplier": "Brightwell Scientific",
+      "order_ref": "",
+      "status": "",
+      "order_date": null,
+      "currency": null,
+      "items": []
+    }
+  },
+  {
+    "id": "C23",
+    "tag": "dispatch-two-references",
+    "received": "2026-09-06",
+    "subject": "Dispatched: TC-7741-B",
+    "from": "Tarn & Co Electronics <sales@tarnco.example.com>",
+    "body": "Your order has been dispatched.\nOrder reference: TC-7741-B\nParcel tracking: RC-0099-2231-GB (Redline Couriers)\n\nItems:\n- USB-C cable 1 m (TC-USBC-1M) x 6\n- Cable ties 200 mm, pack of 100 (TC-CT-200) x 2",
+    "expected": {
+      "docType": "dispatch",
+      "supplier": "Tarn & Co Electronics",
+      "order_ref": "TC-7741-B",
+      "status": "Dispatched",
+      "order_date": null,
+      "currency": null,
+      "items": [
+        {
+          "product": "usb-c cable",
+          "sku": "TC-USBC-1M",
+          "quantity": 6
+        },
+        {
+          "product": "cable ties",
+          "sku": "TC-CT-200",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "C24",
+    "tag": "order-pack-quantity",
+    "received": "2026-10-02",
+    "subject": "Order confirmation OF/55841",
+    "from": "Oakfield Stationery <hello@oakfield.example.com>",
+    "body": "Order OF/55841, placed 2 October 2026.\n\nOF-ENV-50   Envelopes DL, box of 50    12 x £3.90 = £46.80\nDelivery: £3.95\nTotal: £50.75",
+    "expected": {
+      "docType": "order",
+      "supplier": "Oakfield Stationery",
+      "order_ref": "OF/55841",
+      "status": "Ordered",
+      "order_date": "2026-10-02",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "envelopes",
+          "sku": "OF-ENV-50",
+          "quantity": 12
+        }
+      ]
+    }
+  },
+  {
+    "id": "C25",
+    "tag": "order-table-commas",
+    "received": "2026-10-05",
+    "subject": "Order BW10440 confirmed",
+    "from": "Brightwell Scientific <sales@brightwell.example.com>",
+    "body": "Order BW10440 confirmed on 5 October 2026.\n\nCode        | Description                                       | Qty | Price\nBW-GLS-250  | Beaker, borosilicate glass, 250 ml, low form      | 6   | £2.45\nBW-GLS-500  | Beaker, borosilicate glass, 500 ml, low form      | 6   | £3.10\n\nCarriage: £5.50",
+    "expected": {
+      "docType": "order",
+      "supplier": "Brightwell Scientific",
+      "order_ref": "BW10440",
+      "status": "Ordered",
+      "order_date": "2026-10-05",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "beaker",
+          "sku": "BW-GLS-250",
+          "quantity": 6
+        },
+        {
+          "product": "beaker",
+          "sku": "BW-GLS-500",
+          "quantity": 6
+        }
+      ]
+    }
+  },
+  {
+    "id": "C26",
+    "tag": "order-repeat-email",
+    "received": "2026-09-05",
+    "subject": "Reminder: Order confirmation NG-48213",
+    "from": "Northgate Lab Supplies <orders@northgatelab.example.com>",
+    "body": "This is a reminder copy of your order confirmation.\n\nHello Sam,\n\nThank you for your order with Northgate Lab Supplies.\n\nOrder number: NG-48213\nOrder date: 3 September 2026\n\nItem                                      Qty    Price\nNitrile gloves, size M, box of 100\nCode: NG-GLV-M100                          5     £32.00\n\nSubtotal: £32.00\nDelivery: £4.95\nVAT (20%): £7.39\nTotal: £44.34\n\nWe will email you when your order has been dispatched.\n\nNorthgate Lab Supplies Ltd. Registered in England.",
+    "expected": {
+      "docType": "order",
+      "supplier": "Northgate Lab Supplies",
+      "order_ref": "NG-48213",
+      "status": "Ordered",
+      "order_date": "2026-09-03",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "nitrile gloves",
+          "sku": "NG-GLV-M100",
+          "quantity": 5
+        }
+      ]
+    }
+  },
+  {
+    "id": "C27",
+    "tag": "order-discount-line",
+    "received": "2026-10-06",
+    "subject": "Order confirmation HP-2210-02",
+    "from": "Harbourline Packaging <service@harbourline.example.com>",
+    "body": "Order number: HP-2210-02\nOrder date: 6 October 2026\n\nHP-BOX-3020   Corrugated boxes 300 x 200 x 150 mm, pack of 25    2 x £18.40\nHP-TAPE-48    Packing tape, 48 mm x 66 m, box of 36              1 x £24.90\nPromo code AUTUMN5: -£5.00\nShipping: £5.00\nTotal: £61.70",
+    "expected": {
+      "docType": "order",
+      "supplier": "Harbourline Packaging",
+      "order_ref": "HP-2210-02",
+      "status": "Ordered",
+      "order_date": "2026-10-06",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "corrugated boxes",
+          "sku": "HP-BOX-3020",
+          "quantity": 2
+        },
+        {
+          "product": "packing tape",
+          "sku": "HP-TAPE-48",
+          "quantity": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "C28",
+    "tag": "order-recommended-products",
+    "received": "2026-10-07",
+    "subject": "Your Quillon order QC-90020",
+    "from": "Quillon Cleanroom Co <orders@quillon.example.com>",
+    "body": "Thank you for your order.\nOrder number: QC-90020\nOrder date: 7 October 2026\n\nQC-IPA-100   Isopropanol wipes, tub of 100    3 x £6.20\nDelivery: £4.00\n\nYou may also like:\n- Cleanroom gloves, size M (QC-GLV-M) £9.50\n- Sticky mats, 60 sheets (QC-MAT-60) £28.00\n- Face masks type IIR, box of 50 (QC-MASK-IIR) £7.90\n\nTerms apply. Quillon Cleanroom Co, registered in England.",
+    "expected": {
+      "docType": "order",
+      "supplier": "Quillon Cleanroom Co",
+      "order_ref": "QC-90020",
+      "status": "Ordered",
+      "order_date": "2026-10-07",
+      "currency": "GBP",
+      "items": [
+        {
+          "product": "isopropanol wipes",
+          "sku": "QC-IPA-100",
+          "quantity": 3
+        }
+      ]
+    }
+  },
+  {
+    "id": "C29",
+    "tag": "dispatch-partial",
+    "received": "2026-10-08",
+    "subject": "Part of your order has shipped - BW10441",
+    "from": "Brightwell Scientific <sales@brightwell.example.com>",
+    "body": "Order BW10441: 2 of 3 items are on their way.\nCourier: Redline Couriers, tracking RC-0100-4410-GB\n\nShipped:\n- BW-PT-200 Pipette tips 200 µl, rack of 96 x 5\n- BW-MCT-15 Microcentrifuge tubes 1.5 ml, bag of 500 x 2\n\nStill to follow: BW-PAR-M Parafilm M roll x 1 (back in stock next week)",
+    "expected": {
+      "docType": "dispatch",
+      "supplier": "Brightwell Scientific",
+      "order_ref": "BW10441",
+      "status": "Dispatched",
+      "order_date": null,
+      "currency": null,
+      "items": [
+        {
+          "product": "pipette tips",
+          "sku": "BW-PT-200",
+          "quantity": 5
+        },
+        {
+          "product": "microcentrifuge tubes",
+          "sku": "BW-MCT-15",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "C30",
+    "tag": "order-usd-no-date",
+    "received": "2026-10-01",
+    "subject": "Order placed",
+    "from": "Greyfriars Instruments <orders@greyfriars.example.com>",
+    "body": "Hello,\nYour order GF-2026-0912 has been placed.\n\nGF-CAL-150   Digital caliper 150 mm    1 x $24.00\nShipping: $8.00\nTotal: $32.00",
+    "expected": {
+      "docType": "order",
+      "supplier": "Greyfriars Instruments",
+      "order_ref": "GF-2026-0912",
+      "status": "Ordered",
+      "order_date": "2026-10-01",
+      "currency": "USD",
+      "items": [
+        {
+          "product": "digital caliper",
+          "sku": "GF-CAL-150",
+          "quantity": 1
+        }
+      ]
+    }
+  }
+]
