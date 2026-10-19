@@ -1,0 +1,5508 @@
+{
+  "meta": {
+    "prompt": "evals/prompts/v1_baseline.txt",
+    "model": "claude-sonnet-5-5",
+    "repeat": 3,
+    "timestamp": "2026-10-19T15:08:21+00:00"
+  },
+  "summary": {
+    "cases": 90,
+    "passed": 84,
+    "invalid_json": 0,
+    "fields": {
+      "docType": {
+        "correct": 90,
+        "scored": 90
+      },
+      "supplier": {
+        "correct": 90,
+        "scored": 90
+      },
+      "order_ref": {
+        "correct": 90,
+        "scored": 90
+      },
+      "status": {
+        "correct": 90,
+        "scored": 90
+      },
+      "order_date": {
+        "correct": 42,
+        "scored": 42
+      },
+      "currency": {
+        "correct": 51,
+        "scored": 51
+      },
+      "items": {
+        "correct": 75,
+        "scored": 81
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "C01",
+      "tag": "order-basic",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "gloves",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C01",
+      "tag": "order-basic",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": "38.40"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C01",
+      "tag": "order-basic",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "gloves",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": "38.40"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C02",
+      "tag": "order-multi-item",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-07",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "3.20",
+            "net": "32.00",
+            "gross": "38.40"
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "4",
+            "unit_price": "8.75",
+            "net": "35.00",
+            "gross": "42.00"
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "21.00",
+            "net": "21.00",
+            "gross": "25.20"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Ordered",
+        "order_date": "2026-09-07",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C02",
+      "tag": "order-multi-item",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-07",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200 µl",
+            "unit": "rack",
+            "quantity": "10",
+            "unit_price": "3.20",
+            "net": "32.00",
+            "gross": "38.40"
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5 ml",
+            "unit": "bag",
+            "quantity": "4",
+            "unit_price": "8.75",
+            "net": "35.00",
+            "gross": "42.00"
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "roll",
+            "quantity": "1",
+            "unit_price": "21.00",
+            "net": "21.00",
+            "gross": "25.20"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Ordered",
+        "order_date": "2026-09-07",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C02",
+      "tag": "order-multi-item",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-07",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "",
+            "unit": "rack",
+            "quantity": "10",
+            "unit_price": "3.20",
+            "net": "32.00",
+            "gross": "38.40"
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "",
+            "unit": "bag",
+            "quantity": "4",
+            "unit_price": "8.75",
+            "net": "35.00",
+            "gross": "42.00"
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "roll",
+            "quantity": "1",
+            "unit_price": "21.00",
+            "net": "21.00",
+            "gross": "25.20"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Ordered",
+        "order_date": "2026-09-07",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C03",
+      "tag": "order-no-date",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "OF/55821",
+        "order_date": "2026-09-10",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "A4 copier paper, 500 sheets, 5 reams per box",
+            "sku": "OF-PAP-A4",
+            "volume": "",
+            "unit": "box",
+            "quantity": "2",
+            "unit_price": "15.90",
+            "net": "",
+            "gross": "31.80"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55821",
+        "status": "Ordered",
+        "order_date": "2026-09-10",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "copier paper",
+            "sku": "OF-PAP-A4",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C03",
+      "tag": "order-no-date",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "OF/55821",
+        "order_date": "2026-09-10",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "A4 copier paper, 500 sheets",
+            "sku": "OF-PAP-A4",
+            "volume": "5",
+            "unit": "reams per box",
+            "quantity": "2",
+            "unit_price": "15.90",
+            "net": "",
+            "gross": "31.80"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55821",
+        "status": "Ordered",
+        "order_date": "2026-09-10",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "copier paper",
+            "sku": "OF-PAP-A4",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C03",
+      "tag": "order-no-date",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "OF/55821",
+        "order_date": "2026-09-10",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "A4 copier paper, 500 sheets",
+            "sku": "OF-PAP-A4",
+            "volume": "5",
+            "unit": "reams per box",
+            "quantity": "2",
+            "unit_price": "15.90",
+            "net": "",
+            "gross": "31.80"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55821",
+        "status": "Ordered",
+        "order_date": "2026-09-10",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "copier paper",
+            "sku": "OF-PAP-A4",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "tag": "order-eur",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7741-B",
+        "order_date": "2026-09-04",
+        "currency": "EUR",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "USB-C cable 1 m",
+            "sku": "TC-USBC-1M",
+            "volume": "1",
+            "unit": "m",
+            "quantity": "6",
+            "unit_price": "4.10",
+            "net": "",
+            "gross": "24.60"
+          },
+          {
+            "product": "Cable ties 200 mm, pack of 100",
+            "sku": "TC-CT-200",
+            "volume": "100",
+            "unit": "pcs",
+            "quantity": "2",
+            "unit_price": "3.30",
+            "net": "",
+            "gross": "6.60"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7741-B",
+        "status": "Ordered",
+        "order_date": "2026-09-04",
+        "currency": "EUR",
+        "items": [
+          {
+            "product": "usb-c cable",
+            "sku": "TC-USBC-1M",
+            "quantity": 6
+          },
+          {
+            "product": "cable ties",
+            "sku": "TC-CT-200",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "tag": "order-eur",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7741-B",
+        "order_date": "2026-09-04",
+        "currency": "EUR",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "USB-C cable 1 m",
+            "sku": "TC-USBC-1M",
+            "volume": "1",
+            "unit": "m",
+            "quantity": "6",
+            "unit_price": "4.10",
+            "net": "",
+            "gross": "24.60"
+          },
+          {
+            "product": "Cable ties 200 mm, pack of 100",
+            "sku": "TC-CT-200",
+            "volume": "100",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "3.30",
+            "net": "",
+            "gross": "6.60"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7741-B",
+        "status": "Ordered",
+        "order_date": "2026-09-04",
+        "currency": "EUR",
+        "items": [
+          {
+            "product": "usb-c cable",
+            "sku": "TC-USBC-1M",
+            "quantity": 6
+          },
+          {
+            "product": "cable ties",
+            "sku": "TC-CT-200",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "tag": "order-eur",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7741-B",
+        "order_date": "2026-09-04",
+        "currency": "EUR",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "USB-C cable 1 m",
+            "sku": "TC-USBC-1M",
+            "volume": "1",
+            "unit": "m",
+            "quantity": "6",
+            "unit_price": "4.10",
+            "net": "",
+            "gross": "24.60"
+          },
+          {
+            "product": "Cable ties 200 mm, pack of 100",
+            "sku": "TC-CT-200",
+            "volume": "100",
+            "unit": "pcs",
+            "quantity": "2",
+            "unit_price": "3.30",
+            "net": "",
+            "gross": "6.60"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7741-B",
+        "status": "Ordered",
+        "order_date": "2026-09-04",
+        "currency": "EUR",
+        "items": [
+          {
+            "product": "usb-c cable",
+            "sku": "TC-USBC-1M",
+            "quantity": 6
+          },
+          {
+            "product": "cable ties",
+            "sku": "TC-CT-200",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C05",
+      "tag": "order-shipping-fee-trap",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2209-76",
+        "order_date": "2026-09-12",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Corrugated boxes 300 x 200 x 150 mm, pack of 25",
+            "sku": "HP-BOX-3020",
+            "volume": "25",
+            "unit": "pack",
+            "quantity": "4",
+            "unit_price": "18.40",
+            "net": "73.60",
+            "gross": "88.32"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2209-76",
+        "status": "Ordered",
+        "order_date": "2026-09-12",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "corrugated boxes",
+            "sku": "HP-BOX-3020",
+            "quantity": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "C05",
+      "tag": "order-shipping-fee-trap",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2209-76",
+        "order_date": "2026-09-12",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Corrugated boxes 300 x 200 x 150 mm, pack of 25",
+            "sku": "HP-BOX-3020",
+            "volume": "25",
+            "unit": "pack",
+            "quantity": "4",
+            "unit_price": "18.40",
+            "net": "73.60",
+            "gross": "88.32"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2209-76",
+        "status": "Ordered",
+        "order_date": "2026-09-12",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "corrugated boxes",
+            "sku": "HP-BOX-3020",
+            "quantity": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "C05",
+      "tag": "order-shipping-fee-trap",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2209-76",
+        "order_date": "2026-09-12",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Corrugated boxes 300 x 200 x 150 mm, pack of 25",
+            "sku": "HP-BOX-3020",
+            "volume": "25",
+            "unit": "pack",
+            "quantity": "4",
+            "unit_price": "18.40",
+            "net": "73.60",
+            "gross": "88.32"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2209-76",
+        "status": "Ordered",
+        "order_date": "2026-09-12",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "corrugated boxes",
+            "sku": "HP-BOX-3020",
+            "quantity": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "C06",
+      "tag": "order-extra-charges",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90016",
+        "order_date": "2026-09-14",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Cleanroom wipes, pack of 150",
+            "sku": "QC-WIPE-150",
+            "volume": "150",
+            "unit": "pack",
+            "quantity": "6",
+            "unit_price": "11.90",
+            "net": "71.40",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90016",
+        "status": "Ordered",
+        "order_date": "2026-09-14",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "cleanroom wipes",
+            "sku": "QC-WIPE-150",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C06",
+      "tag": "order-extra-charges",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90016",
+        "order_date": "2026-09-14",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Cleanroom wipes, pack of 150",
+            "sku": "QC-WIPE-150",
+            "volume": "150",
+            "unit": "pack",
+            "quantity": "6",
+            "unit_price": "11.90",
+            "net": "71.40",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90016",
+        "status": "Ordered",
+        "order_date": "2026-09-14",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "cleanroom wipes",
+            "sku": "QC-WIPE-150",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C06",
+      "tag": "order-extra-charges",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90016",
+        "order_date": "2026-09-14",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Cleanroom wipes, pack of 150",
+            "sku": "QC-WIPE-150",
+            "volume": "150",
+            "unit": "pack",
+            "quantity": "6",
+            "unit_price": "11.90",
+            "net": "71.40",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90016",
+        "status": "Ordered",
+        "order_date": "2026-09-14",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "cleanroom wipes",
+            "sku": "QC-WIPE-150",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C07",
+      "tag": "order-slash-reference",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55830",
+        "order_date": "2026-09-15",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "box",
+            "quantity": "3",
+            "unit_price": "5.10",
+            "net": "15.30",
+            "gross": ""
+          },
+          {
+            "product": "Sticky notes 76 x 76 mm, pack of 12",
+            "sku": "OF-SN-76",
+            "volume": "12",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "6.40",
+            "net": "12.80",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55830",
+        "status": "Ordered",
+        "order_date": "2026-09-15",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "gel pens",
+            "sku": "OF-PEN-BK12",
+            "quantity": 3
+          },
+          {
+            "product": "sticky notes",
+            "sku": "OF-SN-76",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C07",
+      "tag": "order-slash-reference",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55830",
+        "order_date": "2026-09-15",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "box",
+            "quantity": "3",
+            "unit_price": "5.10",
+            "net": "15.30",
+            "gross": ""
+          },
+          {
+            "product": "Sticky notes 76 x 76 mm, pack of 12",
+            "sku": "OF-SN-76",
+            "volume": "12",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "6.40",
+            "net": "12.80",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55830",
+        "status": "Ordered",
+        "order_date": "2026-09-15",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "gel pens",
+            "sku": "OF-PEN-BK12",
+            "quantity": 3
+          },
+          {
+            "product": "sticky notes",
+            "sku": "OF-SN-76",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C07",
+      "tag": "order-slash-reference",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55830",
+        "order_date": "2026-09-15",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "box",
+            "quantity": "3",
+            "unit_price": "5.10",
+            "net": "15.30",
+            "gross": ""
+          },
+          {
+            "product": "Sticky notes 76 x 76 mm, pack of 12",
+            "sku": "OF-SN-76",
+            "volume": "12",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "6.40",
+            "net": "12.80",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55830",
+        "status": "Ordered",
+        "order_date": "2026-09-15",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "gel pens",
+            "sku": "OF-PEN-BK12",
+            "quantity": 3
+          },
+          {
+            "product": "sticky notes",
+            "sku": "OF-SN-76",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C08",
+      "tag": "order-terse",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7752-A",
+        "order_date": "2026-09-16",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Mini breadboard",
+            "sku": "TC-BB-170",
+            "volume": "",
+            "unit": "",
+            "quantity": "2",
+            "unit_price": "4.90",
+            "net": "",
+            "gross": "9.80"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7752-A",
+        "status": "Ordered",
+        "order_date": "2026-09-16",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "breadboard",
+            "sku": "TC-BB-170",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C08",
+      "tag": "order-terse",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7752-A",
+        "order_date": "2026-09-16",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Mini breadboard",
+            "sku": "TC-BB-170",
+            "volume": "",
+            "unit": "",
+            "quantity": "2",
+            "unit_price": "4.90",
+            "net": "",
+            "gross": "9.80"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7752-A",
+        "status": "Ordered",
+        "order_date": "2026-09-16",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "breadboard",
+            "sku": "TC-BB-170",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C08",
+      "tag": "order-terse",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7752-A",
+        "order_date": "2026-09-16",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Mini breadboard",
+            "sku": "TC-BB-170",
+            "volume": "",
+            "unit": "",
+            "quantity": "2",
+            "unit_price": "4.90",
+            "net": "",
+            "gross": "9.80"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7752-A",
+        "status": "Ordered",
+        "order_date": "2026-09-16",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "breadboard",
+            "sku": "TC-BB-170",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C09",
+      "tag": "dispatch-tracking",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2209-77",
+        "order_date": "2026-09-18",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "SP123456789GB",
+        "carrier": "Swiftpost",
+        "items": [
+          {
+            "product": "Packing tape, 48 mm x 66 m, box of 36",
+            "sku": "HP-TAPE-48",
+            "volume": "48 mm x 66 m",
+            "unit": "box of 36",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2209-77",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "packing tape",
+            "sku": "HP-TAPE-48",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C09",
+      "tag": "dispatch-tracking",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2209-77",
+        "order_date": "2026-09-18",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "SP123456789GB",
+        "carrier": "Swiftpost",
+        "items": [
+          {
+            "product": "Packing tape, 48 mm x 66 m, box of 36",
+            "sku": "HP-TAPE-48",
+            "volume": "48 mm x 66 m",
+            "unit": "box of 36",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2209-77",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "packing tape",
+            "sku": "HP-TAPE-48",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C09",
+      "tag": "dispatch-tracking",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2209-77",
+        "order_date": "2026-09-18",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "SP123456789GB",
+        "carrier": "Swiftpost",
+        "items": [
+          {
+            "product": "Packing tape, 48 mm x 66 m, box of 36",
+            "sku": "HP-TAPE-48",
+            "volume": "48 mm x 66 m",
+            "unit": "box of 36",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2209-77",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "packing tape",
+            "sku": "HP-TAPE-48",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C10",
+      "tag": "dispatch-note",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-09",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0099-2231-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C10",
+      "tag": "dispatch-note",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-09",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0099-2231-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C10",
+      "tag": "dispatch-note",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-09",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0099-2231-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "",
+            "unit": "rack",
+            "quantity": "10",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "",
+            "unit": "bag",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "roll",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C11",
+      "tag": "dispatch-no-order-ref",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-09-19",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "PH-55820013",
+        "carrier": "Parcelhawk",
+        "items": [
+          {
+            "product": "Cleanroom wipes, pack of 150",
+            "sku": "QC-WIPE-150",
+            "volume": "150",
+            "unit": "pack",
+            "quantity": "6",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "cleanroom wipes",
+            "sku": "QC-WIPE-150",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C11",
+      "tag": "dispatch-no-order-ref",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-09-19",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "PH-55820013",
+        "carrier": "Parcelhawk",
+        "items": [
+          {
+            "product": "Cleanroom wipes, pack of 150",
+            "sku": "QC-WIPE-150",
+            "volume": "150",
+            "unit": "pack",
+            "quantity": "6",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "cleanroom wipes",
+            "sku": "QC-WIPE-150",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C11",
+      "tag": "dispatch-no-order-ref",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-09-19",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "PH-55820013",
+        "carrier": "Parcelhawk",
+        "items": [
+          {
+            "product": "Cleanroom wipes, pack of 150",
+            "sku": "QC-WIPE-150",
+            "volume": "150",
+            "unit": "pack",
+            "quantity": "6",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "cleanroom wipes",
+            "sku": "QC-WIPE-150",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C12",
+      "tag": "delivery-basic",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "delivery",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90017",
+        "order_date": "2026-09-22",
+        "currency": "",
+        "status": "Delivered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Face masks type IIR, box of 50",
+            "sku": "QC-MASK-IIR",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "delivery",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90017",
+        "status": "Delivered",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "face masks",
+            "sku": "QC-MASK-IIR",
+            "quantity": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "C12",
+      "tag": "delivery-basic",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "delivery",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90017",
+        "order_date": "2026-09-22",
+        "currency": "",
+        "status": "Delivered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Face masks type IIR, box of 50",
+            "sku": "QC-MASK-IIR",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "delivery",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90017",
+        "status": "Delivered",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "face masks",
+            "sku": "QC-MASK-IIR",
+            "quantity": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "C12",
+      "tag": "delivery-basic",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "delivery",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90017",
+        "order_date": "2026-09-22",
+        "currency": "",
+        "status": "Delivered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Face masks type IIR, box of 50",
+            "sku": "QC-MASK-IIR",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "delivery",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90017",
+        "status": "Delivered",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "face masks",
+            "sku": "QC-MASK-IIR",
+            "quantity": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "C13",
+      "tag": "delivery-arrived",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "delivery",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-06",
+        "currency": "",
+        "status": "Delivered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "delivery",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Delivered",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C13",
+      "tag": "delivery-arrived",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "delivery",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-06",
+        "currency": "",
+        "status": "Delivered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "delivery",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Delivered",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C13",
+      "tag": "delivery-arrived",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "delivery",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-06",
+        "currency": "",
+        "status": "Delivered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "delivery",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Delivered",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C14",
+      "tag": "invoice-with-order-ref",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-05",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": "38.40"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C14",
+      "tag": "invoice-with-order-ref",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-05",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C14",
+      "tag": "invoice-with-order-ref",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-05",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": "38.40"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C15",
+      "tag": "invoice-no-order-ref",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "INV-77120",
+        "order_date": "2026-09-20",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "pens",
+            "quantity": "3",
+            "unit_price": "5.10",
+            "net": "15.30",
+            "gross": "18.36"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Oakfield Stationery",
+        "order_ref": [
+          "",
+          "INV-77120"
+        ],
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "gel pens",
+            "sku": "OF-PEN-BK12",
+            "quantity": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "C15",
+      "tag": "invoice-no-order-ref",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "INV-77120",
+        "order_date": "2026-09-20",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "pens",
+            "quantity": "3",
+            "unit_price": "5.10",
+            "net": "15.30",
+            "gross": "18.36"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Oakfield Stationery",
+        "order_ref": [
+          "",
+          "INV-77120"
+        ],
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "gel pens",
+            "sku": "OF-PEN-BK12",
+            "quantity": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "C15",
+      "tag": "invoice-no-order-ref",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "INV-77120",
+        "order_date": "2026-09-20",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "pens",
+            "quantity": "3",
+            "unit_price": "5.10",
+            "net": "15.30",
+            "gross": "18.36"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Oakfield Stationery",
+        "order_ref": [
+          "",
+          "INV-77120"
+        ],
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "gel pens",
+            "sku": "OF-PEN-BK12",
+            "quantity": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "C16",
+      "tag": "invoice-multi-line",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-11",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "3.20",
+            "net": "32.00",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "4",
+            "unit_price": "8.75",
+            "net": "35.00",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "21.00",
+            "net": "21.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C16",
+      "tag": "invoice-multi-line",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-11",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "",
+            "unit": "rack",
+            "quantity": "10",
+            "unit_price": "3.20",
+            "net": "32.00",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "",
+            "unit": "bag",
+            "quantity": "4",
+            "unit_price": "8.75",
+            "net": "35.00",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "roll",
+            "quantity": "1",
+            "unit_price": "21.00",
+            "net": "21.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C16",
+      "tag": "invoice-multi-line",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "invoice",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10432",
+        "order_date": "2026-09-11",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "3.20",
+            "net": "32.00",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "4",
+            "unit_price": "8.75",
+            "net": "35.00",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "21.00",
+            "net": "21.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "invoice",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10432",
+        "status": "Ordered",
+        "order_date": null,
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 10
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 4
+          },
+          {
+            "product": "parafilm",
+            "sku": "BW-PAR-M",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C17",
+      "tag": "cancellation",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10433",
+        "order_date": "2026-09-21",
+        "currency": "GBP",
+        "status": "Cancelled",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "",
+            "net": "",
+            "gross": "32.00"
+          }
+        ]
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10433",
+        "status": "Cancelled",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C17",
+      "tag": "cancellation",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10433",
+        "order_date": "2026-09-21",
+        "currency": "GBP",
+        "status": "Cancelled",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "",
+            "net": "",
+            "gross": "32.00"
+          }
+        ]
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10433",
+        "status": "Cancelled",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C17",
+      "tag": "cancellation",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10433",
+        "order_date": "2026-09-21",
+        "currency": "GBP",
+        "status": "Cancelled",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "10",
+            "unit_price": "",
+            "net": "",
+            "gross": "32.00"
+          }
+        ]
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10433",
+        "status": "Cancelled",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C18",
+      "tag": "refund",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55821",
+        "order_date": "2026-09-24",
+        "currency": "GBP",
+        "status": "Refunded",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55821",
+        "status": "Refunded",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C18",
+      "tag": "refund",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55821",
+        "order_date": "2026-09-24",
+        "currency": "GBP",
+        "status": "Refunded",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55821",
+        "status": "Refunded",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C18",
+      "tag": "refund",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55821",
+        "order_date": "2026-09-24",
+        "currency": "GBP",
+        "status": "Refunded",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55821",
+        "status": "Refunded",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C19",
+      "tag": "return",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90017",
+        "order_date": "2026-09-26",
+        "currency": "",
+        "status": "Returned",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Face masks type IIR, box of 50",
+            "sku": "",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90017",
+        "status": "Returned",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C19",
+      "tag": "return",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90017",
+        "order_date": "2026-09-26",
+        "currency": "",
+        "status": "Returned",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Face masks type IIR, box of 50",
+            "sku": "",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90017",
+        "status": "Returned",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C19",
+      "tag": "return",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90017",
+        "order_date": "2026-09-26",
+        "currency": "",
+        "status": "Returned",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Face masks type IIR, box of 50",
+            "sku": "",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "4",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": [
+          "other",
+          "order"
+        ],
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90017",
+        "status": "Returned",
+        "order_date": null,
+        "currency": null,
+        "items": null
+      }
+    },
+    {
+      "id": "C20",
+      "tag": "marketing-newsletter",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-10-01",
+        "currency": "GBP",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C20",
+      "tag": "marketing-newsletter",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-10-01",
+        "currency": "GBP",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C20",
+      "tag": "marketing-newsletter",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-10-01",
+        "currency": "GBP",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C21",
+      "tag": "abandoned-basket",
+      "run": 1,
+      "error": null,
+      "passed": false,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": false
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "",
+        "order_date": "2026-10-02",
+        "currency": "",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "box",
+            "quantity": "3",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Stapler, heavy duty",
+            "sku": "OF-STP-HD",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C21",
+      "tag": "abandoned-basket",
+      "run": 2,
+      "error": null,
+      "passed": false,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": false
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "",
+        "order_date": "2026-10-02",
+        "currency": "",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "12",
+            "unit": "box",
+            "quantity": "3",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Stapler, heavy duty",
+            "sku": "OF-STP-HD",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C21",
+      "tag": "abandoned-basket",
+      "run": 3,
+      "error": null,
+      "passed": false,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": false
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "",
+        "order_date": "2026-10-02",
+        "currency": "",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Gel pens, black, box of 12",
+            "sku": "OF-PEN-BK12",
+            "volume": "",
+            "unit": "box",
+            "quantity": "3",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Stapler, heavy duty",
+            "sku": "OF-STP-HD",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C22",
+      "tag": "account-notice",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-10-02",
+        "currency": "",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C22",
+      "tag": "account-notice",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-10-02",
+        "currency": "",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C22",
+      "tag": "account-notice",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "other",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "",
+        "order_date": "2026-10-02",
+        "currency": "",
+        "status": "",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": []
+      },
+      "expected": {
+        "docType": "other",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "",
+        "status": "",
+        "order_date": null,
+        "currency": null,
+        "items": []
+      }
+    },
+    {
+      "id": "C23",
+      "tag": "dispatch-two-references",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7741-B",
+        "order_date": "2026-09-06",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0099-2231-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "USB-C cable 1 m",
+            "sku": "TC-USBC-1M",
+            "volume": "",
+            "unit": "",
+            "quantity": "6",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Cable ties 200 mm, pack of 100",
+            "sku": "TC-CT-200",
+            "volume": "",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7741-B",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "usb-c cable",
+            "sku": "TC-USBC-1M",
+            "quantity": 6
+          },
+          {
+            "product": "cable ties",
+            "sku": "TC-CT-200",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C23",
+      "tag": "dispatch-two-references",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7741-B",
+        "order_date": "2026-09-06",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0099-2231-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "USB-C cable 1 m",
+            "sku": "TC-USBC-1M",
+            "volume": "",
+            "unit": "",
+            "quantity": "6",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Cable ties 200 mm, pack of 100",
+            "sku": "TC-CT-200",
+            "volume": "100",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7741-B",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "usb-c cable",
+            "sku": "TC-USBC-1M",
+            "quantity": 6
+          },
+          {
+            "product": "cable ties",
+            "sku": "TC-CT-200",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C23",
+      "tag": "dispatch-two-references",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Tarn & Co Electronics",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "TC-7741-B",
+        "order_date": "2026-09-06",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0099-2231-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "USB-C cable 1 m",
+            "sku": "TC-USBC-1M",
+            "volume": "",
+            "unit": "",
+            "quantity": "6",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Cable ties 200 mm, pack of 100",
+            "sku": "TC-CT-200",
+            "volume": "",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Tarn & Co Electronics",
+        "order_ref": "TC-7741-B",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "usb-c cable",
+            "sku": "TC-USBC-1M",
+            "quantity": 6
+          },
+          {
+            "product": "cable ties",
+            "sku": "TC-CT-200",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C24",
+      "tag": "order-pack-quantity",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55841",
+        "order_date": "2026-10-02",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Envelopes DL, box of 50",
+            "sku": "OF-ENV-50",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "12",
+            "unit_price": "3.90",
+            "net": "46.80",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55841",
+        "status": "Ordered",
+        "order_date": "2026-10-02",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "envelopes",
+            "sku": "OF-ENV-50",
+            "quantity": 12
+          }
+        ]
+      }
+    },
+    {
+      "id": "C24",
+      "tag": "order-pack-quantity",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55841",
+        "order_date": "2026-10-02",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Envelopes DL, box of 50",
+            "sku": "OF-ENV-50",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "12",
+            "unit_price": "3.90",
+            "net": "46.80",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55841",
+        "status": "Ordered",
+        "order_date": "2026-10-02",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "envelopes",
+            "sku": "OF-ENV-50",
+            "quantity": 12
+          }
+        ]
+      }
+    },
+    {
+      "id": "C24",
+      "tag": "order-pack-quantity",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "OF/55841",
+        "order_date": "2026-10-02",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Envelopes DL, box of 50",
+            "sku": "OF-ENV-50",
+            "volume": "50",
+            "unit": "box",
+            "quantity": "12",
+            "unit_price": "3.90",
+            "net": "46.80",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Oakfield Stationery",
+        "order_ref": "OF/55841",
+        "status": "Ordered",
+        "order_date": "2026-10-02",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "envelopes",
+            "sku": "OF-ENV-50",
+            "quantity": 12
+          }
+        ]
+      }
+    },
+    {
+      "id": "C25",
+      "tag": "order-table-commas",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10440",
+        "order_date": "2026-10-05",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Beaker, borosilicate glass, 250 ml, low form",
+            "sku": "BW-GLS-250",
+            "volume": "250",
+            "unit": "ml",
+            "quantity": "6",
+            "unit_price": "2.45",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Beaker, borosilicate glass, 500 ml, low form",
+            "sku": "BW-GLS-500",
+            "volume": "500",
+            "unit": "ml",
+            "quantity": "6",
+            "unit_price": "3.10",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10440",
+        "status": "Ordered",
+        "order_date": "2026-10-05",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "beaker",
+            "sku": "BW-GLS-250",
+            "quantity": 6
+          },
+          {
+            "product": "beaker",
+            "sku": "BW-GLS-500",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C25",
+      "tag": "order-table-commas",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "brightwell.example.com",
+        "buyer": "",
+        "order_ref": "BW10440",
+        "order_date": "2026-10-05",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Beaker, borosilicate glass, 250 ml, low form",
+            "sku": "BW-GLS-250",
+            "volume": "250",
+            "unit": "ml",
+            "quantity": "6",
+            "unit_price": "2.45",
+            "net": "14.70",
+            "gross": ""
+          },
+          {
+            "product": "Beaker, borosilicate glass, 500 ml, low form",
+            "sku": "BW-GLS-500",
+            "volume": "500",
+            "unit": "ml",
+            "quantity": "6",
+            "unit_price": "3.10",
+            "net": "18.60",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10440",
+        "status": "Ordered",
+        "order_date": "2026-10-05",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "beaker",
+            "sku": "BW-GLS-250",
+            "quantity": 6
+          },
+          {
+            "product": "beaker",
+            "sku": "BW-GLS-500",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C25",
+      "tag": "order-table-commas",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10440",
+        "order_date": "2026-10-05",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Beaker, borosilicate glass, 250 ml, low form",
+            "sku": "BW-GLS-250",
+            "volume": "250",
+            "unit": "ml",
+            "quantity": "6",
+            "unit_price": "2.45",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Beaker, borosilicate glass, 500 ml, low form",
+            "sku": "BW-GLS-500",
+            "volume": "500",
+            "unit": "ml",
+            "quantity": "6",
+            "unit_price": "3.10",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10440",
+        "status": "Ordered",
+        "order_date": "2026-10-05",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "beaker",
+            "sku": "BW-GLS-250",
+            "quantity": 6
+          },
+          {
+            "product": "beaker",
+            "sku": "BW-GLS-500",
+            "quantity": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "C26",
+      "tag": "order-repeat-email",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": "38.40"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C26",
+      "tag": "order-repeat-email",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": "38.40"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C26",
+      "tag": "order-repeat-email",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "supplier_url": "",
+        "buyer": "Sam",
+        "order_ref": "NG-48213",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Nitrile gloves, size M, box of 100",
+            "sku": "NG-GLV-M100",
+            "volume": "100",
+            "unit": "box",
+            "quantity": "5",
+            "unit_price": "6.40",
+            "net": "32.00",
+            "gross": "38.40"
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Northgate Lab Supplies",
+        "order_ref": "NG-48213",
+        "status": "Ordered",
+        "order_date": "2026-09-03",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "nitrile gloves",
+            "sku": "NG-GLV-M100",
+            "quantity": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "C27",
+      "tag": "order-discount-line",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2210-02",
+        "order_date": "2026-10-06",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Corrugated boxes 300 x 200 x 150 mm, pack of 25",
+            "sku": "HP-BOX-3020",
+            "volume": "",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "18.40",
+            "net": "36.80",
+            "gross": ""
+          },
+          {
+            "product": "Packing tape 48 mm x 66 m, box of 36",
+            "sku": "HP-TAPE-48",
+            "volume": "",
+            "unit": "box",
+            "quantity": "1",
+            "unit_price": "24.90",
+            "net": "24.90",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2210-02",
+        "status": "Ordered",
+        "order_date": "2026-10-06",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "corrugated boxes",
+            "sku": "HP-BOX-3020",
+            "quantity": 2
+          },
+          {
+            "product": "packing tape",
+            "sku": "HP-TAPE-48",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C27",
+      "tag": "order-discount-line",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2210-02",
+        "order_date": "2026-10-06",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Corrugated boxes 300 x 200 x 150 mm, pack of 25",
+            "sku": "HP-BOX-3020",
+            "volume": "",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "18.40",
+            "net": "36.80",
+            "gross": ""
+          },
+          {
+            "product": "Packing tape 48 mm x 66 m, box of 36",
+            "sku": "HP-TAPE-48",
+            "volume": "",
+            "unit": "box",
+            "quantity": "1",
+            "unit_price": "24.90",
+            "net": "24.90",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2210-02",
+        "status": "Ordered",
+        "order_date": "2026-10-06",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "corrugated boxes",
+            "sku": "HP-BOX-3020",
+            "quantity": 2
+          },
+          {
+            "product": "packing tape",
+            "sku": "HP-TAPE-48",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C27",
+      "tag": "order-discount-line",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "HP-2210-02",
+        "order_date": "2026-10-06",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Corrugated boxes 300 x 200 x 150 mm, pack of 25",
+            "sku": "HP-BOX-3020",
+            "volume": "25",
+            "unit": "pack",
+            "quantity": "2",
+            "unit_price": "18.40",
+            "net": "36.80",
+            "gross": ""
+          },
+          {
+            "product": "Packing tape, 48 mm x 66 m, box of 36",
+            "sku": "HP-TAPE-48",
+            "volume": "36",
+            "unit": "box",
+            "quantity": "1",
+            "unit_price": "24.90",
+            "net": "24.90",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Harbourline Packaging",
+        "order_ref": "HP-2210-02",
+        "status": "Ordered",
+        "order_date": "2026-10-06",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "corrugated boxes",
+            "sku": "HP-BOX-3020",
+            "quantity": 2
+          },
+          {
+            "product": "packing tape",
+            "sku": "HP-TAPE-48",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C28",
+      "tag": "order-recommended-products",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90020",
+        "order_date": "2026-10-07",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Isopropanol wipes, tub of 100",
+            "sku": "QC-IPA-100",
+            "volume": "100",
+            "unit": "wipes",
+            "quantity": "3",
+            "unit_price": "6.20",
+            "net": "18.60",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90020",
+        "status": "Ordered",
+        "order_date": "2026-10-07",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "isopropanol wipes",
+            "sku": "QC-IPA-100",
+            "quantity": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "C28",
+      "tag": "order-recommended-products",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90020",
+        "order_date": "2026-10-07",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Isopropanol wipes, tub of 100",
+            "sku": "QC-IPA-100",
+            "volume": "100",
+            "unit": "wipes",
+            "quantity": "3",
+            "unit_price": "6.20",
+            "net": "18.60",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90020",
+        "status": "Ordered",
+        "order_date": "2026-10-07",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "isopropanol wipes",
+            "sku": "QC-IPA-100",
+            "quantity": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "C28",
+      "tag": "order-recommended-products",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "QC-90020",
+        "order_date": "2026-10-07",
+        "currency": "GBP",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Isopropanol wipes, tub of 100",
+            "sku": "QC-IPA-100",
+            "volume": "100",
+            "unit": "wipes",
+            "quantity": "3",
+            "unit_price": "6.20",
+            "net": "18.60",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Quillon Cleanroom Co",
+        "order_ref": "QC-90020",
+        "status": "Ordered",
+        "order_date": "2026-10-07",
+        "currency": "GBP",
+        "items": [
+          {
+            "product": "isopropanol wipes",
+            "sku": "QC-IPA-100",
+            "quantity": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "C29",
+      "tag": "dispatch-partial",
+      "run": 1,
+      "error": null,
+      "passed": false,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": false
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10441",
+        "order_date": "2026-10-08",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0100-4410-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "5",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10441",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 5
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C29",
+      "tag": "dispatch-partial",
+      "run": 2,
+      "error": null,
+      "passed": false,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": false
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10441",
+        "order_date": "2026-10-08",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0100-4410-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "5",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10441",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 5
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C29",
+      "tag": "dispatch-partial",
+      "run": 3,
+      "error": null,
+      "passed": false,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "items": false
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "BW10441",
+        "order_date": "2026-10-08",
+        "currency": "",
+        "status": "Dispatched",
+        "link": "",
+        "tracking": "RC-0100-4410-GB",
+        "carrier": "Redline Couriers",
+        "items": [
+          {
+            "product": "Pipette tips 200 µl, rack of 96",
+            "sku": "BW-PT-200",
+            "volume": "200",
+            "unit": "µl",
+            "quantity": "5",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Microcentrifuge tubes 1.5 ml, bag of 500",
+            "sku": "BW-MCT-15",
+            "volume": "1.5",
+            "unit": "ml",
+            "quantity": "2",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          },
+          {
+            "product": "Parafilm M roll",
+            "sku": "BW-PAR-M",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "",
+            "net": "",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "dispatch",
+        "supplier": "Brightwell Scientific",
+        "order_ref": "BW10441",
+        "status": "Dispatched",
+        "order_date": null,
+        "currency": null,
+        "items": [
+          {
+            "product": "pipette tips",
+            "sku": "BW-PT-200",
+            "quantity": 5
+          },
+          {
+            "product": "microcentrifuge tubes",
+            "sku": "BW-MCT-15",
+            "quantity": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "C30",
+      "tag": "order-usd-no-date",
+      "run": 1,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Greyfriars Instruments",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "GF-2026-0912",
+        "order_date": "2026-10-01",
+        "currency": "USD",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Digital caliper 150 mm",
+            "sku": "GF-CAL-150",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "24.00",
+            "net": "24.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Greyfriars Instruments",
+        "order_ref": "GF-2026-0912",
+        "status": "Ordered",
+        "order_date": "2026-10-01",
+        "currency": "USD",
+        "items": [
+          {
+            "product": "digital caliper",
+            "sku": "GF-CAL-150",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C30",
+      "tag": "order-usd-no-date",
+      "run": 2,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Greyfriars Instruments",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "GF-2026-0912",
+        "order_date": "2026-10-01",
+        "currency": "USD",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Digital caliper 150 mm",
+            "sku": "GF-CAL-150",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "24.00",
+            "net": "24.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Greyfriars Instruments",
+        "order_ref": "GF-2026-0912",
+        "status": "Ordered",
+        "order_date": "2026-10-01",
+        "currency": "USD",
+        "items": [
+          {
+            "product": "digital caliper",
+            "sku": "GF-CAL-150",
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "C30",
+      "tag": "order-usd-no-date",
+      "run": 3,
+      "error": null,
+      "passed": true,
+      "fields": {
+        "docType": true,
+        "supplier": true,
+        "order_ref": true,
+        "status": true,
+        "order_date": true,
+        "currency": true,
+        "items": true
+      },
+      "invalid_json": false,
+      "got": {
+        "docType": "order",
+        "supplier": "Greyfriars Instruments",
+        "supplier_url": "",
+        "buyer": "",
+        "order_ref": "GF-2026-0912",
+        "order_date": "2026-10-01",
+        "currency": "USD",
+        "status": "Ordered",
+        "link": "",
+        "tracking": "",
+        "carrier": "",
+        "items": [
+          {
+            "product": "Digital caliper 150 mm",
+            "sku": "GF-CAL-150",
+            "volume": "",
+            "unit": "",
+            "quantity": "1",
+            "unit_price": "24.00",
+            "net": "24.00",
+            "gross": ""
+          }
+        ]
+      },
+      "expected": {
+        "docType": "order",
+        "supplier": "Greyfriars Instruments",
+        "order_ref": "GF-2026-0912",
+        "status": "Ordered",
+        "order_date": "2026-10-01",
+        "currency": "USD",
+        "items": [
+          {
+            "product": "digital caliper",
+            "sku": "GF-CAL-150",
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  ]
+}

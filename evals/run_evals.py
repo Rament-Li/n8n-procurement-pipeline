@@ -13,6 +13,7 @@ Usage (from the repository root):
 import argparse
 import datetime
 import json
+import re
 import os
 import sys
 import time
@@ -33,6 +34,18 @@ def build_user_message(prompt, case):
             + "\nFrom: " + case["from"] + "\n\nBody:\n" + case["body"])
 
 
+def safe_error_detail(err):
+    """Return ' (type: message)' from the API error body, redacted and truncated. Never the raw body or headers."""
+    try:
+        body = json.loads(err.read().decode("utf-8"))
+        info = body.get("error", {})
+        detail = "%s: %s" % (str(info.get("type", ""))[:40], str(info.get("message", ""))[:160])
+    except Exception:
+        return ""
+    detail = re.sub(r"sk-[A-Za-z0-9_\-]{8,}", "[redacted]", detail)
+    return " (" + detail + ")"
+
+
 def call_model(api_key, model, user_message):
     payload = json.dumps({"model": model, "max_tokens": 2000,
                           "messages": [{"role": "user", "content": user_message}]}).encode("utf-8")
@@ -48,7 +61,7 @@ def call_model(api_key, model, user_message):
             if err.code in (429, 500, 529) and attempt < 2:
                 time.sleep(2 * (attempt + 1))
                 continue
-            return None, "http_%d" % err.code  # status code only, never headers or body
+            return None, "http_%d%s" % (err.code, safe_error_detail(err))  # never headers; body reduced to type + short message
         except (urllib.error.URLError, TimeoutError):
             if attempt < 2:
                 time.sleep(2)
