@@ -49,7 +49,13 @@ A full run of both prompts is 60 short API calls.
 
 ## Results
 
-See [RESULTS.md](RESULTS.md). It is generated from the files in `results/`, and it reports no runs until the evals have been run.
+See [RESULTS.md](RESULTS.md). It is generated from the files in `results/`.
+
+### What I found
+
+I ran both prompts against the 30 synthetic emails, three runs each. The original prompt scored 84/90 and the rewritten prompt scored 90/90. Both failures in the original were consistent across repeats, not random. It extracted items from an abandoned-basket email that was never an order, and it listed an unshipped item in a partial-shipment email. Adding explicit rules for those two situations fixed both.
+
+Caveat: I wrote the second prompt after seeing the test cases, so this shows it handles these cases, not that it generalises. The suite no longer separates the two prompts, so the next step is adding harder cases such as forwarded threads, multi-currency invoices and ambiguous dates.
 
 ## Limitations
 

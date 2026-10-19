@@ -40,7 +40,7 @@ Node credentials are references to n8n's credential store, not embedded keys. Ke
 
 ## Evaluation
 
-The `evals/` folder contains a test harness for the extraction step. It runs 30 synthetic emails through two prompt versions, scores each field against a written expected answer, and reports accuracy. It uses no real data, the API key is read from an environment variable only, and an offline scan blocks pushes that contain credentials. See `evals/README.md`.
+The `evals/` folder contains a test harness for the extraction step. It runs 30 synthetic emails through two prompt versions, scores each field against a written expected answer, and reports accuracy. It uses no real data, the API key is read from an environment variable only, and an offline scan blocks pushes that contain credentials. On the current set, the original prompt scored 84/90 and the rewritten one 90/90; the caveats are in `evals/README.md`.
 
 ## Limitations
 
